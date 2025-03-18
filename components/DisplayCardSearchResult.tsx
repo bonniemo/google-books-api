@@ -1,6 +1,6 @@
 "use client";
 import useBookshelfStore from "@/stores/useBookshelfStore";
-import { GiSpellBook } from "react-icons/gi";
+import { BiSolidBookContent } from "react-icons/bi";
 import BookPageBtn from "./BookPageBtn";
 import BookshelfModal from "./BookshelfModal";
 
@@ -75,7 +75,7 @@ const DisplayCardSearchResult = (props: DisplayCardSearchResultProps) => {
                         data-tip="Remove from bookshelf"
                     >
                         <button onClick={() => removeBook(props.id)}>
-                            <GiSpellBook className="min-h-8 min-w-8 mb-4" />
+                            <BiSolidBookContent className="min-h-8 min-w-8 mb-4" />
                         </button>
                     </div>
                 </section>

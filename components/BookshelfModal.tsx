@@ -11,7 +11,7 @@ import { useAuthStore } from "@/stores/useAuthStore";
 import useBookshelfStore from "@/stores/useBookshelfStore";
 import { Book, BookCategoryFilterKey } from "@/types/google-book-search-types";
 import { useEffect, useState } from "react";
-import { FaBook } from "react-icons/fa6";
+import { BiSolidBookHeart } from "react-icons/bi";
 import { DatePicker } from "./DatePicker";
 
 export type BookshelfModalProps = {
@@ -95,7 +95,7 @@ const BookshelfModal = ({ book }: BookshelfModalProps) => {
                     data-tip="Add to Bookshelf"
                     disabled={isLoading}
                 >
-                    <FaBook className="min-h-8 min-w-6" />
+                    <BiSolidBookHeart className="min-h-8 min-w-8" />
                 </button>
             </DialogTrigger>
 
@@ -176,7 +176,7 @@ const BookshelfModal = ({ book }: BookshelfModalProps) => {
                     </label>
                 </div>
 
-                <div className="flex justify-end gap-2 mt-6">
+                <div className="flex justify-between gap-2 mt-6">
                     <button
                         className="btn"
                         onClick={() => setIsOpen(false)}
