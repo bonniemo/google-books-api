@@ -69,7 +69,15 @@ const DisplayCardSearchResult = (props: DisplayCardSearchResultProps) => {
             </section>
             {isInShelf ? (
                 <section className="flex flex-col">
-                    <BookPageBtn />
+                    <BookPageBtn
+                        book={{
+                            id: props.id,
+                            title: props.title,
+                            slug: props.title
+                                ? props.title.toLowerCase().replace(/\s+/g, "-")
+                                : props.id,
+                        }}
+                    />
                     <div
                         className="tooltip tooltip-left tooltip-primary flex items-center"
                         data-tip="Remove from bookshelf"
