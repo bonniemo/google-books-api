@@ -100,16 +100,16 @@ const BookshelfModal = ({ book }: BookshelfModalProps) => {
             </DialogTrigger>
 
             <DialogContent
-                className="bg-background text-text border p-8 max-w-md w-full"
+                className="bg-background text-text border p-8 border-none max-w-md w-full"
                 onPointerDownOutside={(e) => e.preventDefault()} // Prevent closing when clicking on date picker
             >
                 <DialogHeader>
-                    <DialogTitle className="leading-relaxed p-2">
+                    <DialogTitle className="leading-relaxed text-left">
                         Add "{book.title}" to Bookshelf
                     </DialogTitle>
                 </DialogHeader>
 
-                <div className="p-2 flex flex-col gap-4">
+                <div className="py-1 flex flex-col gap-4">
                     {BOOK_CATEGORIES.map(({ key, label }) => (
                         <div key={key} className="flex items-center space-x-2">
                             <Checkbox
@@ -185,7 +185,7 @@ const BookshelfModal = ({ book }: BookshelfModalProps) => {
                         Close
                     </button>
                     <button
-                        className="btn btn-primary"
+                        className="px-4 py-2 bg-white text-black rounded-md"
                         onClick={handleAddToBookshelf}
                         disabled={isLoading}
                     >
