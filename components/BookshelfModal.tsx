@@ -10,8 +10,9 @@ import {
 import { useAuthStore } from "@/stores/useAuthStore";
 import useBookshelfStore from "@/stores/useBookshelfStore";
 import { Book, BookCategoryFilterKey } from "@/types/google-book-search-types";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaBook } from "react-icons/fa6";
+import { DatePicker } from "./DatePicker";
 
 export type BookshelfModalProps = {
     book: Book;
@@ -43,6 +44,15 @@ const BookshelfModal = ({ book }: BookshelfModalProps) => {
     );
     const [startDate, setStartDate] = useState<Date | null>(null);
     const [isOpen, setIsOpen] = useState(false); // Control modal open/close
+
+    // Reset state when modal opens/closes
+    useEffect(() => {
+        if (!isOpen) {
+            // Reset only when closed
+            return;
+        }
+        // Form state is preserved intentionally
+    }, [isOpen]);
 
     const toggleFilter = (key: BookCategoryFilterKey) => {
         setFilters((prev) => ({ ...prev, [key]: !prev[key] }));
@@ -89,12 +99,17 @@ const BookshelfModal = ({ book }: BookshelfModalProps) => {
                 </button>
             </DialogTrigger>
 
-            <DialogContent className="bg-background text-text border-none">
+            <DialogContent
+                className="bg-background text-text border p-8 max-w-md w-full"
+                onPointerDownOutside={(e) => e.preventDefault()} // Prevent closing when clicking on date picker
+            >
                 <DialogHeader>
-                    <DialogTitle>Add "{book.title}" to Bookshelf</DialogTitle>
+                    <DialogTitle className="leading-relaxed p-2">
+                        Add "{book.title}" to Bookshelf
+                    </DialogTitle>
                 </DialogHeader>
 
-                <div className="py-4 flex flex-col gap-4">
+                <div className="p-2 flex flex-col gap-4">
                     {BOOK_CATEGORIES.map(({ key, label }) => (
                         <div key={key} className="flex items-center space-x-2">
                             <Checkbox
@@ -112,11 +127,16 @@ const BookshelfModal = ({ book }: BookshelfModalProps) => {
                     ))}
 
                     {filters.reading && (
-                        <div className="mt-4">
+                        <div className="mt-4 z-50">
                             <label className="block mb-2 font-semibold">
                                 Started Reading:
                             </label>
-                            {/* Add a Date Picker Here */}
+                            <div className="relative z-50">
+                                <DatePicker
+                                    date={startDate}
+                                    setDate={setStartDate}
+                                />
+                            </div>
                         </div>
                     )}
 
@@ -156,20 +176,20 @@ const BookshelfModal = ({ book }: BookshelfModalProps) => {
                     </label>
                 </div>
 
-                <div className="flex justify-end gap-2">
-                    <button
-                        className="btn btn-primary"
-                        onClick={handleAddToBookshelf}
-                        disabled={isLoading}
-                    >
-                        {isLoading ? "Adding..." : "Add to Bookshelf"}
-                    </button>
+                <div className="flex justify-end gap-2 mt-6">
                     <button
                         className="btn"
                         onClick={() => setIsOpen(false)}
                         disabled={isLoading}
                     >
                         Close
+                    </button>
+                    <button
+                        className="btn btn-primary"
+                        onClick={handleAddToBookshelf}
+                        disabled={isLoading}
+                    >
+                        {isLoading ? "Adding..." : "Add to Bookshelf"}
                     </button>
                 </div>
             </DialogContent>

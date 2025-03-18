@@ -28,7 +28,7 @@ const DisplayCardSearchResult = (props: DisplayCardSearchResultProps) => {
     const isInShelf = !!bookInShelf;
 
     return (
-        <article className="w-full p-2 rounded-lg flex justify-between border border-white shadow-xl">
+        <article className="w-full p-2 rounded-lg flex justify-between border border-white hover:border-green-600 shadow-xl">
             <section className="flex">
                 <img
                     src={props.imgUrl}
