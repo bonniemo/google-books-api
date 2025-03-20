@@ -129,12 +129,24 @@ export const updateBook = async (
             throw new Error(`Failed to update book: ${response.statusText}`);
         }
 
-        set((state: any) => ({
-            books: state.books.map((book: Book) =>
+        // Update the local state
+        set((state: any) => {
+            const updatedBooks = state.books.map((book: Book) =>
                 book.id === bookId ? { ...book, ...updatedBook } : book
-            ),
-            isLoading: false,
-        }));
+            );
+
+            // If there's a currentBook and it's the one being updated, update it too
+            const updatedCurrentBook =
+                state.currentBook && state.currentBook.id === bookId
+                    ? { ...state.currentBook, ...updatedBook }
+                    : state.currentBook;
+
+            return {
+                books: updatedBooks,
+                currentBook: updatedCurrentBook,
+                isLoading: false,
+            };
+        });
     } catch (error) {
         console.error("Failed to update book:", error);
         set({

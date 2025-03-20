@@ -20,6 +20,10 @@ export default {
                     DEFAULT: "#47e16e", // Using your background color as accent
                     foreground: "#252525", // Using your text color as accent-foreground
                 },
+                card: {
+                    bg: "#ffffff",
+                    text: "#3d3d3d",
+                },
             },
         },
     },

@@ -1,3 +1,10 @@
+// First, let's modify the item interfaces to include currentDate
+export interface BookNote {
+    text: string;
+    page?: number;
+    currentDate: string; // Add date when the note was created
+}
+
 export interface GoogleBooksSearchResponse {
     kind?: string; // e.g. "books#volumes"
     totalItems?: number; // total number of items found
@@ -9,7 +16,6 @@ export interface GoogleBookVolume {
     id?: string; // e.g. "YTZKAAAAYAAJ"
     etag?: string; // e.g. "Vu9VabENqkw"
     selfLink?: string; // e.g. "https://www.googleapis.com/books/v1/volumes/YTZKAAAAYAAJ"
-
     volumeInfo?: GoogleBookVolumeInfo;
     saleInfo?: {};
     accessInfo?: {};
@@ -73,9 +79,9 @@ export interface Book {
     reviewDate?: string | null;
     startDate?: string | null;
     finishDate?: string | null;
-    quotes?: { text: string; page?: number }[] | null; // User's saved quotes
-    reflections?: { text: string; page?: number }[] | null; // User's reflections
-    memorable?: { text: string; page?: number }[] | null; // Things to remember
+    quotes?: BookNote[] | null; // Updated to BookNote with currentDate
+    reflections?: BookNote[] | null; // Updated to BookNote with currentDate
+    memorable?: BookNote[] | null; // Updated to BookNote with currentDate
 }
 
 export type BookCategoryFilterKey =

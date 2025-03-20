@@ -27,7 +27,7 @@ export default function RootLayout({
                     <div className="md:hidden bg-background">
                         <Settings />
                     </div>
-                    {children}
+                    <div className="mb-36">{children}</div>
                     {/* bottom menu for mobile */}
                     <div className="md:hidden fixed bottom-0 left-0 right-0 z-10 bg-background">
                         <Nav />
