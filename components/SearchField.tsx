@@ -1,6 +1,8 @@
 "use client";
 import Form from "next/form";
 import { usePathname, useSearchParams } from "next/navigation";
+import { Button } from "./ui/button";
+import { Input } from "./ui/input";
 
 const SearchField = () => {
     const searchParams = useSearchParams();
@@ -8,8 +10,8 @@ const SearchField = () => {
 
     return (
         <>
-            <Form action={pathname} className="flex w-full gap-6">
-                <input
+            <Form action={pathname} className="flex w-full gap-4">
+                <Input
                     key={searchParams.get("q")}
                     type="text"
                     name="q"
@@ -17,9 +19,13 @@ const SearchField = () => {
                     defaultValue={searchParams.get("q") || ""}
                     className="input input-primary w-full"
                 />
-                <button className="btn btn-soft btn-primary" type="submit">
+                <Button
+                    className="btn btn-soft btn-primary"
+                    variant="outline"
+                    type="submit"
+                >
                     Search
-                </button>
+                </Button>
             </Form>
         </>
     );
