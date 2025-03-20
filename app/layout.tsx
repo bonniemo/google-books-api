@@ -17,7 +17,7 @@ export default function RootLayout({
 }>) {
     return (
         <html lang="en">
-            <body className="bg-background text-text">
+            <body className="bg-background text-text px-2 md:px-4">
                 <AuthProvider>
                     {/* top menu for desktop */}
                     <div className="hidden md:block sticky top-0 z-10 bg-background">
