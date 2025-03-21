@@ -53,7 +53,6 @@ const UserBookNotesModal = ({
 
     const handleSave = async () => {
         if (!content.trim()) return;
-
         setIsSubmitting(true);
 
         try {
@@ -94,6 +93,9 @@ const UserBookNotesModal = ({
             }
 
             setIsOpen(false);
+            setHeading("");
+            setFromPage("");
+            setToPage("");
             setContent("");
         } catch (error) {
             console.error(`Error saving ${type}:`, error);
