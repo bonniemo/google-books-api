@@ -1,6 +1,7 @@
 "use client";
 import useBookshelfStore from "@/stores/useBookshelfStore";
-import { Book, BookNote } from "@/types/google-book-search-types";
+
+import { Book, BookNote } from "@/types/bookAppTypes";
 import { useState } from "react";
 import { Button } from "./ui/button";
 import {
@@ -17,7 +18,7 @@ import { Label } from "./ui/label";
 type NoteType = "reflection" | "quote" | "memorable";
 
 interface UserBookNotesModalProps {
-    type: NoteType;
+    type: string;
     bookId: string;
     onSaved?: () => void;
 }

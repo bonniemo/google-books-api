@@ -26,7 +26,6 @@ const GetBookFromUrl = () => {
 
     const [initialLoading, setInitialLoading] = useState(true);
 
-    // Get everything we need from the store
     const {
         books,
         loadBooks,
@@ -37,7 +36,6 @@ const GetBookFromUrl = () => {
         clearError,
     } = useBookshelfStore();
 
-    // Effect to load books when component mounts
     useEffect(() => {
         // Clear any existing errors when component mounts to prevent error flash
         clearError();
@@ -50,14 +48,12 @@ const GetBookFromUrl = () => {
                 setInitialLoading(false);
             });
         } else {
-            // If we already have books, we're not in initial loading state
             setInitialLoading(false);
         }
     }, [books.length, loadBooks, clearError]);
 
     // Effect to find the book once books are loaded
     useEffect(() => {
-        // Don't try to match if we don't have books yet or if we're still loading
         if (isLoading || !books || books.length === 0) return;
 
         const slug = params?.slug as string;
@@ -69,10 +65,6 @@ const GetBookFromUrl = () => {
         // Normalize the slug for comparison
         const normalizedSlug = normalizeForComparison(decodedSlug);
 
-        console.log("Searching for book with normalized slug:", normalizedSlug);
-        console.log("Available books:", books.length);
-
-        // Try to find the book
         const foundBook = books.find((book) => {
             if (!book.title) return false;
 
@@ -82,10 +74,6 @@ const GetBookFromUrl = () => {
             // Method 2: Normalized comparison (ignoring spaces and hyphens)
             const normalizedTitle = normalizeForComparison(book.title);
 
-            console.log(
-                `Comparing: "${normalizedTitle}" with "${normalizedSlug}"`
-            );
-
             return (
                 bookSlug === decodedSlug ||
                 normalizedTitle === normalizedSlug ||
@@ -93,21 +81,14 @@ const GetBookFromUrl = () => {
             );
         });
 
-        if (foundBook) {
-            console.log("Found book:", foundBook.title);
-        } else {
-            console.log("Book not found");
-        }
-
         setCurrentBook(foundBook || null);
     }, [params, books, isLoading]);
 
-    // Loading state
     if (initialLoading || isLoading) {
         return (
             <div className="p-4">
                 <h1 className="text-xl mb-4">Loading book...</h1>
-                <p>Please wait while we retrieve your bookshelf.</p>
+                <p>Please wait while we retrieve it.</p>
             </div>
         );
     }

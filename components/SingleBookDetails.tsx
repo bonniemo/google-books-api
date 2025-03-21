@@ -2,7 +2,7 @@ import useBookshelfStore from "@/stores/useBookshelfStore";
 
 import { formatDate } from "@/utils/utils";
 import { useEffect } from "react";
-import UserBookNotesModal from "./UserBookNotesModal";
+import UserNotes from "./UserNotes";
 
 const SingleBookDetails = () => {
     const { currentBook, loadBooks, books } = useBookshelfStore();
@@ -17,7 +17,8 @@ const SingleBookDetails = () => {
     }
 
     // Find the most up-to-date version of this book from the refreshed books array
-    const book = books.find((b) => b.id === currentBook.id) || currentBook;
+    const book =
+        books.find((book) => book.id === currentBook.id) || currentBook;
 
     return (
         <>
@@ -64,32 +65,9 @@ const SingleBookDetails = () => {
                     </p>
                 )}
             </section>
-            <section className="mt-10">
-                <div className="flex justify-between items-center">
-                    <h3 className="text-2xl">Reflections</h3>
-                    <UserBookNotesModal
-                        type="reflection"
-                        bookId={book.id}
-                        onSaved={() => loadBooks()}
-                    />
-                </div>
-                <ul className="mt-8 space-y-4">
-                    {book.reflections && book.reflections.length > 0 ? (
-                        book.reflections.map((reflection, index) => (
-                            <li
-                                key={index}
-                                className="p-2 rounded bg-card-bg text-card-text"
-                            >
-                                {reflection.text}
-                            </li>
-                        ))
-                    ) : (
-                        <li className="text-gray-500 italic">
-                            No reflections yet
-                        </li>
-                    )}
-                </ul>
-            </section>
+            <UserNotes book={book} loadBooks={loadBooks} type="reflection" />
+            <UserNotes book={book} loadBooks={loadBooks} type="quote" />
+            <UserNotes book={book} loadBooks={loadBooks} type="memorable" />
         </>
     );
 };
