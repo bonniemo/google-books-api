@@ -4,11 +4,7 @@ import {
     removeBook,
     updateBook,
 } from "@/app/actions/bookshelfActions";
-import {
-    Book,
-    BookCategoryFilterKey,
-    BookNote,
-} from "@/types/google-book-search-types";
+import { Book, BookCategoryFilterKey, BookNote } from "@/types/bookAppTypes";
 import { create } from "zustand";
 
 interface BookshelfState {
@@ -26,17 +22,23 @@ interface BookshelfState {
     toggleFilter: (filter: BookCategoryFilterKey) => void;
     setCurrentBook: (book: Book | null) => void;
     clearError: () => void;
-    // New methods for adding notes with timestamps
-    addQuote: (bookId: string, text: string, page?: number) => Promise<void>;
+    // Note methods
+    addQuote: (
+        bookId: string,
+        note: Omit<BookNote, "dateSaved">
+    ) => Promise<void>;
     addReflection: (
         bookId: string,
-        text: string,
-        page?: number
+        note: Omit<BookNote, "dateSaved">
     ) => Promise<void>;
     addMemorable: (
         bookId: string,
-        text: string,
-        page?: number
+        note: Omit<BookNote, "dateSaved">
+    ) => Promise<void>;
+    deleteNote: (
+        bookId: string,
+        type: "quote" | "reflection" | "memorable",
+        noteId: string
     ) => Promise<void>;
 }
 
@@ -68,20 +70,18 @@ const useBookshelfStore = create<BookshelfState>((set, get) => ({
     setCurrentBook: (book) => set({ currentBook: book }),
     clearError: () => set({ error: null }),
 
-    // New methods to add notes with timestamps
-    addQuote: async (bookId, text, page) => {
+    // Updated note methods to accept the full note object
+    addQuote: async (bookId, note) => {
         const { books } = get();
         const book = books.find((b) => b.id === bookId);
-
         if (!book) {
             set({ error: "Book not found" });
             return;
         }
 
         const newQuote: BookNote = {
-            text,
-            page,
-            currentDate: new Date().toISOString(),
+            ...note,
+            dateSaved: new Date().toISOString(),
         };
 
         const updatedQuotes = book.quotes
@@ -91,19 +91,17 @@ const useBookshelfStore = create<BookshelfState>((set, get) => ({
         await updateBook(set, bookId, { quotes: updatedQuotes });
     },
 
-    addReflection: async (bookId, text, page) => {
+    addReflection: async (bookId, note) => {
         const { books } = get();
         const book = books.find((b) => b.id === bookId);
-
         if (!book) {
             set({ error: "Book not found" });
             return;
         }
 
         const newReflection: BookNote = {
-            text,
-            page,
-            currentDate: new Date().toISOString(),
+            ...note,
+            dateSaved: new Date().toISOString(),
         };
 
         const updatedReflections = book.reflections
@@ -113,19 +111,17 @@ const useBookshelfStore = create<BookshelfState>((set, get) => ({
         await updateBook(set, bookId, { reflections: updatedReflections });
     },
 
-    addMemorable: async (bookId, text, page) => {
+    addMemorable: async (bookId, note) => {
         const { books } = get();
         const book = books.find((b) => b.id === bookId);
-
         if (!book) {
             set({ error: "Book not found" });
             return;
         }
 
         const newMemorable: BookNote = {
-            text,
-            page,
-            currentDate: new Date().toISOString(),
+            ...note,
+            dateSaved: new Date().toISOString(),
         };
 
         const updatedMemorables = book.memorable
@@ -133,6 +129,47 @@ const useBookshelfStore = create<BookshelfState>((set, get) => ({
             : [newMemorable];
 
         await updateBook(set, bookId, { memorable: updatedMemorables });
+    },
+    // Updated deleteNote function using only string IDs
+    deleteNote: async (bookId, type, noteId) => {
+        const { books } = get();
+        const book = books.find((b) => b.id === bookId);
+        if (!book) {
+            set({ error: "Book not found" });
+            return;
+        }
+
+        if (type === "quote") {
+            if (!book.quotes || !Array.isArray(book.quotes)) {
+                set({ error: "No quotes found for this book" });
+                return;
+            }
+
+            const updatedQuotes = book.quotes.filter(
+                (note) => note.id !== noteId
+            );
+            await updateBook(set, bookId, { quotes: updatedQuotes });
+        } else if (type === "reflection") {
+            if (!book.reflections || !Array.isArray(book.reflections)) {
+                set({ error: "No reflections found for this book" });
+                return;
+            }
+
+            const updatedReflections = book.reflections.filter(
+                (note) => note.id !== noteId
+            );
+            await updateBook(set, bookId, { reflections: updatedReflections });
+        } else if (type === "memorable") {
+            if (!book.memorable || !Array.isArray(book.memorable)) {
+                set({ error: "No memorable passages found for this book" });
+                return;
+            }
+
+            const updatedMemorables = book.memorable.filter(
+                (note) => note.id !== noteId
+            );
+            await updateBook(set, bookId, { memorable: updatedMemorables });
+        }
     },
 }));
 

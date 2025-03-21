@@ -1,8 +1,8 @@
 "use client";
 import useBookshelfStore from "@/stores/useBookshelfStore";
-
 import { Book, BookNote } from "@/types/bookAppTypes";
 import { useState } from "react";
+import { v4 as uuidv4 } from "uuid";
 import { Button } from "./ui/button";
 import {
     Dialog,
@@ -65,6 +65,7 @@ const UserBookNotesModal = ({
 
             // Create the new note with the required structure
             const newNote: BookNote = {
+                id: uuidv4(),
                 heading: heading,
                 fromPage: fromPage ? Number(fromPage) : undefined,
                 toPage: toPage ? Number(toPage) : undefined,

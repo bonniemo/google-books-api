@@ -2,7 +2,7 @@ import BookshelfDisplay from "@/components/BookshelfDisplay";
 
 const bookCorner = () => {
     return (
-        <section className="p-2">
+        <section>
             <BookshelfDisplay />
         </section>
     );

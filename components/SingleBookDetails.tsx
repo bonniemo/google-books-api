@@ -65,9 +65,16 @@ const SingleBookDetails = () => {
                     </p>
                 )}
             </section>
-            <UserNotes book={book} loadBooks={loadBooks} type="reflection" />
-            <UserNotes book={book} loadBooks={loadBooks} type="quote" />
-            <UserNotes book={book} loadBooks={loadBooks} type="memorable" />
+
+            <section className="mt-8 space-y-24">
+                <UserNotes
+                    book={book}
+                    loadBooks={loadBooks}
+                    type="reflection"
+                />
+                <UserNotes book={book} loadBooks={loadBooks} type="quote" />
+                <UserNotes book={book} loadBooks={loadBooks} type="memorable" />
+            </section>
         </>
     );
 };

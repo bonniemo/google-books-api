@@ -2,7 +2,7 @@
 import { Checkbox } from "@/components/ui/checkbox";
 import { useAuthStore } from "@/stores/useAuthStore";
 import useBookshelfStore from "@/stores/useBookshelfStore";
-import { BookCategoryFilterKey } from "@/types/google-book-search-types";
+import { BookCategoryFilterKey } from "@/types/bookAppTypes";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect } from "react";
 import BooksCategoryDisplay from "./BooksCategoryDisplay";
@@ -61,7 +61,7 @@ const BookshelfDisplay = () => {
     }
 
     return (
-        <div className="container mx-auto p-6">
+        <div className="container mx-auto">
             {/* Dynamically render checkboxes */}
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 mb-6">
                 {BOOK_CATEGORIES.map(({ key, label }) => (

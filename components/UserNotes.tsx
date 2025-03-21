@@ -1,13 +1,16 @@
+import useBookshelfStore from "@/stores/useBookshelfStore";
 import { Book, BookNote } from "@/types/bookAppTypes";
-
 import { formatDate } from "@/utils/utils";
-import UserBookNotesModal from "./UserBookNotesModal";
+import { useState } from "react";
+import { BsFillTrash3Fill } from "react-icons/bs";
 import {
     Accordion,
     AccordionContent,
     AccordionItem,
     AccordionTrigger,
 } from "./ui/accordion";
+import { Button } from "./ui/button";
+import UserBookNotesModal from "./UserBookNotesModal";
 
 interface UserNotesProps {
     book: Book;
@@ -16,6 +19,9 @@ interface UserNotesProps {
 }
 
 const UserNotes = ({ book, loadBooks, type }: UserNotesProps) => {
+    const [deletingId, setDeletingId] = useState<string | null>(null);
+    const { deleteNote } = useBookshelfStore();
+
     const typePlural = `${type}s`;
 
     const getNotes = (): BookNote[] => {
@@ -33,8 +39,21 @@ const UserNotes = ({ book, loadBooks, type }: UserNotesProps) => {
 
     const notes = getNotes();
 
+    const handleDelete = async (noteId: string) => {
+        setDeletingId(noteId);
+
+        try {
+            await deleteNote(book.id, type, noteId);
+            loadBooks();
+        } catch (error) {
+            console.error(`Error deleting ${type}:`, error);
+        } finally {
+            setDeletingId(null);
+        }
+    };
+
     return (
-        <section className="mt-10">
+        <section>
             <div className="flex justify-between items-center">
                 <h3 className="text-2xl uppercase">{typePlural}</h3>
                 <UserBookNotesModal
@@ -45,10 +64,10 @@ const UserNotes = ({ book, loadBooks, type }: UserNotesProps) => {
             </div>
             <ul className="mt-8 space-y-4">
                 {notes.length > 0 ? (
-                    notes.map((note: BookNote, index: number) => (
+                    notes.map((note: BookNote) => (
                         <li
-                            key={index}
-                            className="p-2 rounded bg-card-bg text-card-text"
+                            key={note.id}
+                            className="px-2 rounded bg-card-bg text-card-text"
                         >
                             <Accordion
                                 type="single"
@@ -67,11 +86,30 @@ const UserNotes = ({ book, loadBooks, type }: UserNotesProps) => {
                                         </div>
                                     </AccordionTrigger>
                                     <AccordionContent>
-                                        <span>
-                                            Pages {note.fromPage} to{" "}
-                                            {note.toPage}
-                                        </span>
+                                        {note.fromPage && note.toPage && (
+                                            <span>
+                                                Pages {note.fromPage} to{" "}
+                                                {note.toPage}
+                                            </span>
+                                        )}
                                         <p>{note.text}</p>
+                                        <div className="flex justify-end">
+                                            <Button
+                                                onClick={() =>
+                                                    handleDelete(note.id)
+                                                }
+                                                disabled={
+                                                    deletingId === note.id
+                                                }
+                                                variant="destructive"
+                                            >
+                                                {deletingId === note.id ? (
+                                                    "Deleting..."
+                                                ) : (
+                                                    <BsFillTrash3Fill />
+                                                )}
+                                            </Button>
+                                        </div>
                                     </AccordionContent>
                                 </AccordionItem>
                             </Accordion>

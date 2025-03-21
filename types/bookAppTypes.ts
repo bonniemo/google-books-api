@@ -1,4 +1,5 @@
 export interface BookNote {
+    id: string;
     heading: string;
     text: string;
     fromPage?: number | undefined;

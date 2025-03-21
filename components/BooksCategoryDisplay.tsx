@@ -1,4 +1,4 @@
-import { Book } from "@/types/google-book-search-types";
+import { Book } from "@/types/bookAppTypes";
 import DisplayCardSearchResult from "./DisplayCardSearchResult";
 
 type BooksCategoryDisplayProps = {
