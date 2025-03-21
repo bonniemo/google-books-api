@@ -1,7 +1,9 @@
 export interface BookNote {
+    heading: string;
     text: string;
-    page?: number;
-    currentDate: string;
+    fromPage?: number | undefined;
+    toPage?: number | undefined;
+    dateSaved: string;
 }
 
 export interface Book {

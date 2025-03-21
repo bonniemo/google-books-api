@@ -1,5 +1,13 @@
 import { Book, BookNote } from "@/types/bookAppTypes";
+
+import { formatDate } from "@/utils/utils";
 import UserBookNotesModal from "./UserBookNotesModal";
+import {
+    Accordion,
+    AccordionContent,
+    AccordionItem,
+    AccordionTrigger,
+} from "./ui/accordion";
 
 interface UserNotesProps {
     book: Book;
@@ -28,7 +36,7 @@ const UserNotes = ({ book, loadBooks, type }: UserNotesProps) => {
     return (
         <section className="mt-10">
             <div className="flex justify-between items-center">
-                <h3 className="text-2xl">{typePlural}</h3>
+                <h3 className="text-2xl uppercase">{typePlural}</h3>
                 <UserBookNotesModal
                     type={type}
                     bookId={book.id}
@@ -42,7 +50,31 @@ const UserNotes = ({ book, loadBooks, type }: UserNotesProps) => {
                             key={index}
                             className="p-2 rounded bg-card-bg text-card-text"
                         >
-                            {note.text}
+                            <Accordion
+                                type="single"
+                                collapsible
+                                className="w-full"
+                            >
+                                <AccordionItem value="item-1">
+                                    <AccordionTrigger>
+                                        <div>
+                                            <h3 className="text-xl">
+                                                {note.heading}
+                                            </h3>
+                                            <span className="text-sm">
+                                                {formatDate(note.dateSaved)}
+                                            </span>
+                                        </div>
+                                    </AccordionTrigger>
+                                    <AccordionContent>
+                                        <span>
+                                            Pages {note.fromPage} to{" "}
+                                            {note.toPage}
+                                        </span>
+                                        <p>{note.text}</p>
+                                    </AccordionContent>
+                                </AccordionItem>
+                            </Accordion>
                         </li>
                     ))
                 ) : (
