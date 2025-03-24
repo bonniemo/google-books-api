@@ -3,6 +3,7 @@ import AuthProvider from "@/providers/AuthProvider";
 
 import Settings from "@/components/Settings";
 import type { Metadata } from "next";
+import { ThemeProvider } from "next-themes";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -16,22 +17,29 @@ export default function RootLayout({
     children: React.ReactNode;
 }>) {
     return (
-        <html lang="en">
+        <html lang="en" suppressHydrationWarning>
             <body className="bg-background text-text px-2 md:px-4">
                 <AuthProvider>
-                    {/* top menu for desktop */}
-                    <div className="hidden md:block sticky top-0 z-10 bg-background">
-                        <Nav />
-                    </div>
-                    {/* top settings for mobile */}
-                    <div className="md:hidden bg-background">
-                        <Settings />
-                    </div>
-                    <div className="mb-36">{children}</div>
-                    {/* bottom menu for mobile */}
-                    <div className="md:hidden fixed bottom-0 left-0 right-0 z-10 bg-background">
-                        <Nav />
-                    </div>
+                    <ThemeProvider
+                        attribute="class"
+                        defaultTheme="system"
+                        enableSystem
+                        disableTransitionOnChange
+                    >
+                        {/* top menu for desktop */}
+                        <div className="hidden md:block sticky top-0 z-10 bg-background">
+                            <Nav />
+                        </div>
+                        {/* top settings for mobile */}
+                        <div className="md:hidden bg-background">
+                            <Settings />
+                        </div>
+                        <div className="mb-36">{children}</div>
+                        {/* bottom menu for mobile */}
+                        <div className="md:hidden fixed bottom-0 left-0 right-0 z-10 bg-background">
+                            <Nav />
+                        </div>
+                    </ThemeProvider>
                 </AuthProvider>
             </body>
         </html>
