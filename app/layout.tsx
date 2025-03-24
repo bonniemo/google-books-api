@@ -2,6 +2,7 @@ import Nav from "@/components/Nav";
 import AuthProvider from "@/providers/AuthProvider";
 
 import Settings from "@/components/Settings";
+import ThemeToggleBtn from "@/components/ThemeToggleBtn";
 import type { Metadata } from "next";
 import { ThemeProvider } from "next-themes";
 import "./globals.css";
@@ -18,7 +19,7 @@ export default function RootLayout({
 }>) {
     return (
         <html lang="en" suppressHydrationWarning>
-            <body className="bg-background text-text px-2 md:px-4">
+            <body className="bg-base-light dark:bg-base-night text-base-dark dark:text-base-light px-2 sm:px-4">
                 <AuthProvider>
                     <ThemeProvider
                         attribute="class"
@@ -29,10 +30,12 @@ export default function RootLayout({
                         {/* top menu for desktop */}
                         <div className="hidden md:block sticky top-0 z-10 bg-background">
                             <Nav />
+                            <ThemeToggleBtn />
                         </div>
                         {/* top settings for mobile */}
-                        <div className="md:hidden bg-background">
+                        <div className="md:hidden bg-background flex items-center">
                             <Settings />
+                            <ThemeToggleBtn />
                         </div>
                         <div className="mb-36">{children}</div>
                         {/* bottom menu for mobile */}

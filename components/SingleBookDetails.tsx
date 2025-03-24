@@ -22,7 +22,7 @@ const SingleBookDetails = () => {
 
     return (
         <>
-            <section className="p-4">
+            <section>
                 <img
                     src={book.imgUrl || ""}
                     alt={`Book cover of ${book.title}`}

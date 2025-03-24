@@ -9,10 +9,10 @@ import {
 } from "@/components/ui/dialog";
 import { useAuthStore } from "@/stores/useAuthStore";
 import useBookshelfStore from "@/stores/useBookshelfStore";
-import { Book, BookCategoryFilterKey } from "@/types/google-book-search-types";
+import { Book, BookCategoryFilterKey } from "@/types/bookAppTypes";
+
 import { useEffect, useState } from "react";
 import { BiSolidBookHeart } from "react-icons/bi";
-import { DatePicker } from "./DatePicker";
 
 export type BookshelfModalProps = {
     book: Book;
@@ -100,7 +100,7 @@ const BookshelfModal = ({ book }: BookshelfModalProps) => {
             </DialogTrigger>
 
             <DialogContent
-                className="bg-background text-text border p-8 border-none max-w-md w-full"
+                className="bg-accent-light text-base-dark border p-8 border-none rounded-lg max-w-md w-full"
                 onPointerDownOutside={(e) => e.preventDefault()} // Prevent closing when clicking on date picker
             >
                 <DialogHeader>
@@ -132,10 +132,10 @@ const BookshelfModal = ({ book }: BookshelfModalProps) => {
                                 Started Reading:
                             </label>
                             <div className="relative z-50">
-                                <DatePicker
+                                {/* <DatePicker
                                     date={startDate}
                                     setDate={setStartDate}
-                                />
+                                /> */}
                             </div>
                         </div>
                     )}

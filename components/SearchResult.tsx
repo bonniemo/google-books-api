@@ -22,7 +22,7 @@ const SearchResult = ({
                 <h2 className="text-2xl font-semibold mb-3">
                     Welcome to Book Search
                 </h2>
-                <p className="text-gray-100 max-w-lg">
+                <p className=" max-w-lg">
                     Search for your favorite books above to discover information
                     about titles, authors, descriptions, and more.
                 </p>
@@ -35,7 +35,7 @@ const SearchResult = ({
         return (
             <div className="flex flex-col items-center justify-center mt-16 ">
                 <h2 className="text-xl font-semibold mb-3">No books found</h2>
-                <p className="text-gray-100 max-w-lg">
+                <p className=" max-w-lg">
                     We couldn't find any books matching "{searchQuery}". Please
                     try a different search term or check your spelling.
                 </p>
