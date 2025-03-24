@@ -111,7 +111,7 @@ const UserBookNotesModal = ({
                     Add new
                 </Button>
             </DialogTrigger>
-            <DialogContent className="sm:max-w-[425px] border-none">
+            <DialogContent className="sm:max-w-[425px] border-none bg-accent-light rounded-lg">
                 <DialogHeader>
                     <DialogTitle>Add {label}</DialogTitle>
                 </DialogHeader>

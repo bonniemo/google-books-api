@@ -53,9 +53,9 @@ const UserNotes = ({ book, loadBooks, type }: UserNotesProps) => {
     };
 
     return (
-        <section>
+        <section className="px-2 pt-6 pb-8 my-12">
             <div className="flex justify-between items-center">
-                <h3 className="text-2xl uppercase">{typePlural}</h3>
+                <h3 className="text-2xl">{typePlural}</h3>
                 <UserBookNotesModal
                     type={type}
                     bookId={book.id}
@@ -67,7 +67,7 @@ const UserNotes = ({ book, loadBooks, type }: UserNotesProps) => {
                     notes.map((note: BookNote) => (
                         <li
                             key={note.id}
-                            className="px-2 rounded bg-card-bg text-card-text"
+                            className="px-2 bg-accent-light text-base-dark rounded-lg shadow-lg"
                         >
                             <Accordion
                                 type="single"
@@ -84,6 +84,7 @@ const UserNotes = ({ book, loadBooks, type }: UserNotesProps) => {
                                                 {formatDate(note.dateSaved)}
                                             </span>
                                         </div>
+                                        <div className="bg-base-dark rounded-l-lg col-start-11 col-span-1 row-start-1"></div>
                                     </AccordionTrigger>
                                     <AccordionContent>
                                         {note.fromPage && note.toPage && (

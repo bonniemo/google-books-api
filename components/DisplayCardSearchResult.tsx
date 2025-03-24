@@ -1,5 +1,6 @@
 "use client";
 import useBookshelfStore from "@/stores/useBookshelfStore";
+import { useState } from "react";
 import { BiSolidBookContent } from "react-icons/bi";
 import BookPageBtn from "./BookPageBtn";
 import BookshelfModal from "./BookshelfModal";
@@ -14,13 +15,14 @@ interface DisplayCardSearchResultProps {
     pageCount?: number;
     categories?: string[];
     averageRating?: number;
-    wantToRead?: boolean; // Added default optional properties
+    wantToRead?: boolean;
     reading?: boolean;
     read?: boolean;
     readAgain?: boolean;
 }
 
 const DisplayCardSearchResult = (props: DisplayCardSearchResultProps) => {
+    const [showFullDescription, setShowFullDescription] = useState(false);
     const { books, removeBook } = useBookshelfStore();
 
     // Find the book in the bookshelf if it exists
@@ -28,14 +30,14 @@ const DisplayCardSearchResult = (props: DisplayCardSearchResultProps) => {
     const isInShelf = !!bookInShelf;
 
     return (
-        <article className="w-full rounded-r-lg rounded-l-xl grid grid-cols-12 bg-accent-light text-base-dark shadow-xl max-w-full">
+        <article className="w-full rounded-r-lg rounded-l-xl grid grid-cols-12 bg-accent-light text-base-dark shadow-xl">
             <div className="bg-base-dark rounded-l-lg col-start-1 col-span-2 row-start-1"></div>
             {/* Thumbnail section */}
-            <div className="col-span-4 flex items-center col-start-1 col-end-5 justify-center row-start-1">
+            <div className="col-span-4 flex mt-4 col-start-1 col-end-5 justify-center row-start-1">
                 <img
                     src={props.imgUrl}
                     alt={`Book cover of ${props.title}`}
-                    className="max-h-[80%] object-cover rounded-lg"
+                    className="max-h-[11rem] object-cover rounded-lg mr-8 mb-4"
                 />
             </div>
 
@@ -62,14 +64,38 @@ const DisplayCardSearchResult = (props: DisplayCardSearchResultProps) => {
                     <p className="text-sm">Rating: {props.averageRating} / 5</p>
                 )}
                 {props.description && (
-                    <p className="text-sm mt-2 line-clamp-3">
-                        {props.description}
-                    </p>
+                    <div className="mt-2">
+                        <div className="relative">
+                            <p className="text-sm">
+                                {showFullDescription
+                                    ? props.description
+                                    : `${props.description.slice(0, 150)}${
+                                          props.description.length > 150
+                                              ? "..."
+                                              : ""
+                                      }`}
+                            </p>
+                            {props.description.length > 150 && (
+                                <button
+                                    className="text-xs underline text-primary mt-1"
+                                    onClick={() =>
+                                        setShowFullDescription(
+                                            !showFullDescription
+                                        )
+                                    }
+                                >
+                                    {showFullDescription
+                                        ? "Show less"
+                                        : "Show more"}
+                                </button>
+                            )}
+                        </div>
+                    </div>
                 )}
             </section>
 
             {/* Button / icon section */}
-            <section className="col-span-1 flex flex-col mt-2 mr-2">
+            <section className="col-span-1 flex flex-col mt-2">
                 {isInShelf ? (
                     <>
                         <BookPageBtn
