@@ -13,6 +13,7 @@ import { Book, BookCategoryFilterKey } from "@/types/bookAppTypes";
 
 import { useEffect, useState } from "react";
 import { BiSolidBookHeart } from "react-icons/bi";
+import { FaRegStar, FaStar } from "react-icons/fa6";
 
 export type BookshelfModalProps = {
     book: Book;
@@ -39,6 +40,7 @@ const BookshelfModal = ({ book }: BookshelfModalProps) => {
     });
     const [addedNoFlag, setAddedNoFlag] = useState<boolean>(false);
     const [rating, setRating] = useState<number | null>(null);
+    const [hoverRating, setHoverRating] = useState<number | null>(null);
     const [categories, setCategories] = useState<string[]>(
         book.categories ?? []
     );
@@ -140,22 +142,40 @@ const BookshelfModal = ({ book }: BookshelfModalProps) => {
                         </div>
                     )}
 
-                    <label className="block mt-4">
-                        Rating:
-                        <input
-                            type="number"
-                            min="1"
-                            max="5"
-                            value={rating ?? ""}
-                            onChange={(e) =>
-                                setRating(
-                                    e.target.value
-                                        ? Number(e.target.value)
-                                        : null
-                                )
-                            }
-                            className="input input-bordered w-full mt-1"
-                        />
+                    <label className="mt-4 flex items-center gap-2">
+                        <span className="block font-semibold">Rating:</span>
+                        <div className="flex items-center gap-1">
+                            {[1, 2, 3, 4, 5].map((star) => {
+                                // Determine if star should be filled
+                                const filled =
+                                    (hoverRating !== null &&
+                                        star <= hoverRating) ||
+                                    (hoverRating === null &&
+                                        rating !== null &&
+                                        star <= rating);
+
+                                return (
+                                    <button
+                                        key={star}
+                                        type="button"
+                                        onClick={() => setRating(star)}
+                                        onMouseEnter={() =>
+                                            setHoverRating(star)
+                                        }
+                                        onMouseLeave={() =>
+                                            setHoverRating(null)
+                                        }
+                                        className="text-accent-accent hover:scale-110 transition-transform mt-1"
+                                    >
+                                        {filled ? (
+                                            <FaStar className="w-6 h-6" />
+                                        ) : (
+                                            <FaRegStar className="w-6 h-6" />
+                                        )}
+                                    </button>
+                                );
+                            })}
+                        </div>
                     </label>
 
                     <label className="block mt-4">
@@ -178,14 +198,14 @@ const BookshelfModal = ({ book }: BookshelfModalProps) => {
 
                 <div className="flex justify-between gap-2 mt-6">
                     <button
-                        className="btn"
+                        className="px-4 py-2  border-2 border-accent-accent rounded-md shadow-md hover:border-accent-soft hover:bg-accent-soft"
                         onClick={() => setIsOpen(false)}
                         disabled={isLoading}
                     >
                         Close
                     </button>
                     <button
-                        className="px-4 py-2 bg-white text-black rounded-md"
+                        className="text-base-dark text-center px-4 py-2 bg-accent-accent hover:bg-accent-soft inset-12 rounded-md shadow-md"
                         onClick={handleAddToBookshelf}
                         disabled={isLoading}
                     >

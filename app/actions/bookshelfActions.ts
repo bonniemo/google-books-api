@@ -1,5 +1,5 @@
 import { useAuthStore } from "@/stores/useAuthStore";
-import { Book } from "@/types/google-book-search-types";
+import { Book } from "@/types/bookAppTypes";
 
 // Load books for the current user
 export const loadBooks = async (set: any) => {

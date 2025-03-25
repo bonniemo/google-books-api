@@ -1,10 +1,13 @@
 import useBookshelfStore from "@/stores/useBookshelfStore";
 import { formatDate } from "@/utils/utils";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { FaRegStar, FaStar } from "react-icons/fa6";
 import UserNotes from "./UserNotes";
 
 const SingleBookDetails = () => {
     const { currentBook, loadBooks, books } = useBookshelfStore();
+    const [rating, setRating] = useState<number | null>(null);
+    const [hoverRating, setHoverRating] = useState<number | null>(null);
 
     // Refresh data when component mounts or after updates
     useEffect(() => {
@@ -21,7 +24,7 @@ const SingleBookDetails = () => {
 
     return (
         <>
-            <section>
+            <section className="text-sm">
                 <img
                     src={book.imgUrl || ""}
                     alt={`Book cover of ${book.title}`}
@@ -36,33 +39,46 @@ const SingleBookDetails = () => {
                         </span>
                     )}
                 </h1>
-                {book.publishedDate && (
-                    <p className="text-sm">Published: {book.publishedDate}</p>
-                )}
+                {book.publishedDate && <p>Published: {book.publishedDate}</p>}
                 {book.categories && (
-                    <p className="text-sm">
-                        Categories: {book.categories.join(", ")}
-                    </p>
+                    <p>Categories: {book.categories.join(", ")}</p>
                 )}
-                {book.pageCount && (
-                    <p className="text-sm">Pages: {book.pageCount}</p>
-                )}
-                {book.averageRating && (
-                    <p className="text-sm">Rating: {book.averageRating} / 5</p>
-                )}
-                {book.rating && (
-                    <p className="text-sm">Rating: {book.rating} / 5</p>
-                )}
+                {book.pageCount && <p>Pages: {book.pageCount}</p>}
+                <label className="flex items-center gap-1">
+                    <span>Rating:</span>
+                    <div className="flex items-center gap-1">
+                        {[1, 2, 3, 4, 5].map((star) => {
+                            // Determine if star should be filled
+                            const filled =
+                                (hoverRating !== null && star <= hoverRating) ||
+                                (hoverRating === null &&
+                                    rating !== null &&
+                                    star <= rating);
+
+                            return (
+                                <button
+                                    key={star}
+                                    type="button"
+                                    onClick={() => setRating(star)}
+                                    onMouseEnter={() => setHoverRating(star)}
+                                    onMouseLeave={() => setHoverRating(null)}
+                                    className="text-accent-accent hover:scale-110 transition-transform mt-1"
+                                >
+                                    {filled ? (
+                                        <FaStar className="w-6 h-6" />
+                                    ) : (
+                                        <FaRegStar className="w-6 h-6" />
+                                    )}
+                                </button>
+                            );
+                        })}
+                    </div>
+                </label>
+                {book.rating && <p>Rating: {book.rating} / 5</p>}
                 {book.startDate && (
-                    <p className="text-sm">
-                        Started reading: {formatDate(book.startDate)}
-                    </p>
+                    <p>Started reading: {formatDate(book.startDate)}</p>
                 )}
-                {book.finishDate && (
-                    <p className="text-sm">
-                        Finished reading {book.finishDate}
-                    </p>
-                )}
+                {book.finishDate && <p>Finished reading {book.finishDate}</p>}
             </section>
 
             <section className="mt-8 space-y-20">

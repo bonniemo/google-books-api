@@ -5,6 +5,8 @@ import { BiSolidBookContent } from "react-icons/bi";
 import BookPageBtn from "./BookPageBtn";
 import BookshelfModal from "./BookshelfModal";
 
+import { FaRegStar, FaStar } from "react-icons/fa6";
+
 interface DisplayCardSearchResultProps {
     id: string;
     imgUrl: string;
@@ -23,6 +25,8 @@ interface DisplayCardSearchResultProps {
 
 const DisplayCardSearchResult = (props: DisplayCardSearchResultProps) => {
     const [showFullDescription, setShowFullDescription] = useState(false);
+    const [rating, setRating] = useState<number | null>(null);
+    const [hoverRating, setHoverRating] = useState<number | null>(null);
     const { books, removeBook } = useBookshelfStore();
 
     // Find the book in the bookshelf if it exists
@@ -42,27 +46,46 @@ const DisplayCardSearchResult = (props: DisplayCardSearchResultProps) => {
             </div>
 
             {/* Info section */}
-            <section className="col-span-7 pt-4 -ml-4 mr-4">
+            <section className="col-span-7 pt-4 -ml-4 mr-4 text-sm">
                 <h2 className="text-lg font-semibold">
                     {props.title || "Untitled"}
                 </h2>
-                {props.authors && (
-                    <p className="text-sm">By: {props.authors.join(", ")}</p>
-                )}
-                {props.publishedDate && (
-                    <p className="text-sm">Published: {props.publishedDate}</p>
-                )}
+                {props.authors && <p>By: {props.authors.join(", ")}</p>}
+                {props.publishedDate && <p>Published: {props.publishedDate}</p>}
                 {props.categories && (
-                    <p className="text-sm">
-                        Categories: {props.categories.join(", ")}
-                    </p>
+                    <p>Categories: {props.categories.join(", ")}</p>
                 )}
-                {props.pageCount && (
-                    <p className="text-sm">Pages: {props.pageCount}</p>
-                )}
-                {props.averageRating && (
-                    <p className="text-sm">Rating: {props.averageRating} / 5</p>
-                )}
+                {props.pageCount && <p>Pages: {props.pageCount}</p>}
+                <label className=" flex items-center gap-1">
+                    <span>Rating:</span>
+                    <div className="flex items-center gap-1">
+                        {[1, 2, 3, 4, 5].map((star) => {
+                            // Determine if star should be filled
+                            const filled =
+                                (hoverRating !== null && star <= hoverRating) ||
+                                (hoverRating === null &&
+                                    rating !== null &&
+                                    star <= rating);
+
+                            return (
+                                <button
+                                    key={star}
+                                    type="button"
+                                    onClick={() => setRating(star)}
+                                    onMouseEnter={() => setHoverRating(star)}
+                                    onMouseLeave={() => setHoverRating(null)}
+                                    className="text-accent-accent hover:scale-110 transition-transform mt-1"
+                                >
+                                    {filled ? (
+                                        <FaStar className="w-6 h-6" />
+                                    ) : (
+                                        <FaRegStar className="w-6 h-6" />
+                                    )}
+                                </button>
+                            );
+                        })}
+                    </div>
+                </label>
                 {props.description && (
                     <div className="mt-2">
                         <div className="relative">

@@ -1,5 +1,5 @@
 import { adminAuth, adminDb } from "@/app/firebase/admin-config";
-import { Book } from "@/types/google-book-search-types";
+import { Book } from "@/types/bookAppTypes";
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 
