@@ -1,3 +1,5 @@
+import NotesButton from "@/components/NotesButton";
+
 const Home = () => {
     return (
         <>

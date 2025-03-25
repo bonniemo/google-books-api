@@ -1,8 +1,9 @@
 import useBookshelfStore from "@/stores/useBookshelfStore";
 import { Book, BookNote } from "@/types/bookAppTypes";
-import { formatDate } from "@/utils/utils";
+import { formatDate, getLabel } from "@/utils/utils";
 import { useState } from "react";
 import { BsFillTrash3Fill } from "react-icons/bs";
+import Divider from "./Divider";
 import {
     Accordion,
     AccordionContent,
@@ -22,7 +23,9 @@ const UserNotes = ({ book, loadBooks, type }: UserNotesProps) => {
     const [deletingId, setDeletingId] = useState<string | null>(null);
     const { deleteNote } = useBookshelfStore();
 
-    const typePlural = `${type}s`;
+    const label = getLabel(type);
+
+    const typePlural = `${label}s`;
 
     const getNotes = (): BookNote[] => {
         switch (type) {
@@ -53,8 +56,9 @@ const UserNotes = ({ book, loadBooks, type }: UserNotesProps) => {
     };
 
     return (
-        <section className="p-4 rounded-lg pb-8 my-12 bg-accent-accent bg-opacity-50 dark:bg-accent-night drop-shadow-lg">
-            <div className="flex justify-between items-center">
+        <section className=" rounded-lg pb-8 my-12 bg-opacity-50 dark:bg-opacity-100 drop-shadow-lg">
+            <Divider />
+            <div className="flex justify-between items-center mt-8 bg-opacity-50">
                 <h3 className="text-2xl">{typePlural}</h3>
                 <UserBookNotesModal
                     type={type}
@@ -67,7 +71,7 @@ const UserNotes = ({ book, loadBooks, type }: UserNotesProps) => {
                     notes.map((note: BookNote) => (
                         <li
                             key={note.id}
-                            className="px-2 bg-accent-light text-base-dark rounded-lg shadow-lg"
+                            className="p-4 dark:text-base-light bg-accent-light dark:bg-accent-night text-base-dark rounded-lg shadow-lg"
                         >
                             <Accordion
                                 type="single"

@@ -1,8 +1,10 @@
 "use client";
 import useBookshelfStore from "@/stores/useBookshelfStore";
 import { Book, BookNote } from "@/types/bookAppTypes";
+import { getLabel } from "@/utils/utils";
 import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
+import NotesButton from "./NotesButton";
 import { Button } from "./ui/button";
 import {
     Dialog,
@@ -35,21 +37,7 @@ const UserBookNotesModal = ({
     const [isOpen, setIsOpen] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
 
-    // Display label based on type
-    const getLabel = () => {
-        switch (type) {
-            case "reflection":
-                return "Reflection";
-            case "quote":
-                return "Quote";
-            case "memorable":
-                return "Memorable Passage";
-            default:
-                return "Content";
-        }
-    };
-
-    const label = getLabel();
+    const label = getLabel(type);
 
     const handleSave = async () => {
         if (!content.trim()) return;
@@ -107,9 +95,9 @@ const UserBookNotesModal = ({
     return (
         <Dialog open={isOpen} onOpenChange={setIsOpen}>
             <DialogTrigger asChild>
-                <Button variant="outline" onClick={() => setIsOpen(true)}>
-                    Add new
-                </Button>
+                <NotesButton onClick={() => setIsOpen(true)}>
+                    {label}
+                </NotesButton>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[425px] border-none bg-accent-light rounded-lg">
                 <DialogHeader>
@@ -166,7 +154,7 @@ const UserBookNotesModal = ({
                         onClick={handleSave}
                         disabled={isSubmitting || !content.trim()}
                     >
-                        {isSubmitting ? "Saving..." : `Save ${getLabel()}`}
+                        {isSubmitting ? "Saving..." : `Save ${getLabel(type)}`}
                     </Button>
                 </DialogFooter>
             </DialogContent>
