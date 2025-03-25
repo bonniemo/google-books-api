@@ -1,6 +1,6 @@
 "use client";
 import useBookshelfStore from "@/stores/useBookshelfStore";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { BiSolidBookContent } from "react-icons/bi";
 import BookPageBtn from "./BookPageBtn";
 import BookshelfModal from "./BookshelfModal";
@@ -21,22 +21,38 @@ interface DisplayCardSearchResultProps {
     reading?: boolean;
     read?: boolean;
     readAgain?: boolean;
+    rating?: number | null;
 }
 
 const DisplayCardSearchResult = (props: DisplayCardSearchResultProps) => {
     const [showFullDescription, setShowFullDescription] = useState(false);
     const [rating, setRating] = useState<number | null>(null);
     const [hoverRating, setHoverRating] = useState<number | null>(null);
-    const { books, removeBook } = useBookshelfStore();
+    const { books, removeBook, updateBook } = useBookshelfStore();
 
-    // Find the book in the bookshelf if it exists
     const bookInShelf = books.find((book) => book.id === props.id);
     const isInShelf = !!bookInShelf;
+
+    useEffect(() => {
+        if (bookInShelf && bookInShelf.rating) {
+            setRating(bookInShelf.rating);
+        } else if (props.rating) {
+            setRating(props.rating);
+        }
+    }, [bookInShelf, props.rating]);
+
+    const handleRatingChange = async (newRating: number) => {
+        const updatedRating = rating === newRating ? null : newRating;
+        setRating(updatedRating);
+
+        if (isInShelf) {
+            await updateBook(props.id, { rating: updatedRating });
+        }
+    };
 
     return (
         <article className="rounded-r-lg rounded-l-xl grid grid-cols-12 bg-accent-light text-base-dark shadow-xl">
             <div className="bg-base-dark rounded-l-lg col-start-1 col-span-2 row-start-1"></div>
-            {/* Thumbnail section */}
             <div className="col-span-4 flex mt-4 col-start-1 col-end-5 justify-center row-start-1">
                 <img
                     src={props.imgUrl}
@@ -56,11 +72,10 @@ const DisplayCardSearchResult = (props: DisplayCardSearchResultProps) => {
                     <p>Categories: {props.categories.join(", ")}</p>
                 )}
                 {props.pageCount && <p>Pages: {props.pageCount}</p>}
-                <label className=" flex items-center gap-1">
+                <label className="flex items-center gap-1">
                     <span>Rating:</span>
                     <div className="flex items-center gap-1">
                         {[1, 2, 3, 4, 5].map((star) => {
-                            // Determine if star should be filled
                             const filled =
                                 (hoverRating !== null && star <= hoverRating) ||
                                 (hoverRating === null &&
@@ -71,10 +86,11 @@ const DisplayCardSearchResult = (props: DisplayCardSearchResultProps) => {
                                 <button
                                     key={star}
                                     type="button"
-                                    onClick={() => setRating(star)}
+                                    onClick={() => handleRatingChange(star)}
                                     onMouseEnter={() => setHoverRating(star)}
                                     onMouseLeave={() => setHoverRating(null)}
                                     className="text-accent-accent hover:scale-110 transition-transform mt-1"
+                                    aria-label={`Rate ${star} stars`}
                                 >
                                     {filled ? (
                                         <FaStar className="w-6 h-6" />
@@ -117,7 +133,6 @@ const DisplayCardSearchResult = (props: DisplayCardSearchResultProps) => {
                 )}
             </section>
 
-            {/* Button / icon section */}
             <section className="col-span-1 flex flex-col mt-2">
                 {isInShelf ? (
                     <>
@@ -151,6 +166,7 @@ const DisplayCardSearchResult = (props: DisplayCardSearchResultProps) => {
                             read: props.read || false,
                             readAgain: props.readAgain || false,
                             addedNoFlag: false,
+                            rating: rating,
                         }}
                     />
                 )}

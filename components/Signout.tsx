@@ -15,8 +15,6 @@ const Signout = () => {
             setIsLoading(true);
             await signOut();
 
-            // Add a cache-busting parameter to the redirect URL
-            // This helps ensure the sign-in page isn't served from cache
             const cacheBuster = `?cb=${Date.now()}`;
             router.push(`/signIn${cacheBuster}`);
         } catch (error) {

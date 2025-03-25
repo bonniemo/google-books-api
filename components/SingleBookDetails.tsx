@@ -5,22 +5,33 @@ import { FaRegStar, FaStar } from "react-icons/fa6";
 import UserNotes from "./UserNotes";
 
 const SingleBookDetails = () => {
-    const { currentBook, loadBooks, books } = useBookshelfStore();
+    const { currentBook, loadBooks, books, updateBook } = useBookshelfStore();
     const [rating, setRating] = useState<number | null>(null);
     const [hoverRating, setHoverRating] = useState<number | null>(null);
 
-    // Refresh data when component mounts or after updates
     useEffect(() => {
         loadBooks();
     }, [loadBooks]);
 
-    if (!currentBook) {
+    const book =
+        books.find((book) => book.id === currentBook?.id) || currentBook;
+
+    useEffect(() => {
+        if (book?.rating) {
+            setRating(book.rating);
+        }
+    }, [book]);
+
+    if (!book) {
         return null;
     }
 
-    // Find the most up-to-date version of this book from the refreshed books array
-    const book =
-        books.find((book) => book.id === currentBook.id) || currentBook;
+    const handleRatingChange = async (newRating: number) => {
+        const updatedRating = rating === newRating ? null : newRating;
+        setRating(updatedRating);
+
+        await updateBook(book.id, { rating: updatedRating });
+    };
 
     return (
         <>
@@ -48,7 +59,6 @@ const SingleBookDetails = () => {
                     <span>Rating:</span>
                     <div className="flex items-center gap-1">
                         {[1, 2, 3, 4, 5].map((star) => {
-                            // Determine if star should be filled
                             const filled =
                                 (hoverRating !== null && star <= hoverRating) ||
                                 (hoverRating === null &&
@@ -59,10 +69,11 @@ const SingleBookDetails = () => {
                                 <button
                                     key={star}
                                     type="button"
-                                    onClick={() => setRating(star)}
+                                    onClick={() => handleRatingChange(star)}
                                     onMouseEnter={() => setHoverRating(star)}
                                     onMouseLeave={() => setHoverRating(null)}
                                     className="text-accent-accent hover:scale-110 transition-transform mt-1"
+                                    aria-label={`Rate ${star} stars`}
                                 >
                                     {filled ? (
                                         <FaStar className="w-6 h-6" />
@@ -74,7 +85,6 @@ const SingleBookDetails = () => {
                         })}
                     </div>
                 </label>
-                {book.rating && <p>Rating: {book.rating} / 5</p>}
                 {book.startDate && (
                     <p>Started reading: {formatDate(book.startDate)}</p>
                 )}

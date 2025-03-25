@@ -40,6 +40,8 @@ interface BookshelfState {
         type: "quote" | "reflection" | "memorable",
         noteId: string
     ) => Promise<void>;
+    // Helper method to get book by ID
+    getBookById: (bookId: string) => Book | null;
 }
 
 const useBookshelfStore = create<BookshelfState>((set, get) => ({
@@ -54,11 +56,48 @@ const useBookshelfStore = create<BookshelfState>((set, get) => ({
         readAgain: true,
         addedNoFlag: true,
     },
+
+    // Helper method to get book by ID
+    getBookById: (bookId) => {
+        const { books } = get();
+        return books.find((b) => b.id === bookId) || null;
+    },
+
     // API Methods
     loadBooks: () => loadBooks(set),
-    addBook: (book) => addBook(set, book),
+
+    addBook: async (book) => {
+        set({ isLoading: true });
+        try {
+            // Check if book already exists
+            const { books } = get();
+            const existingBook = books.find((b) => b.id === book.id);
+
+            if (existingBook) {
+                await updateBook(set, book.id, {
+                    ...book,
+
+                    quotes: existingBook.quotes || [],
+                    reflections: existingBook.reflections || [],
+                    memorable: existingBook.memorable || [],
+                });
+            } else {
+                await addBook(set, book);
+            }
+        } catch (error) {
+            set({
+                error:
+                    error instanceof Error
+                        ? error.message
+                        : "Failed to add book",
+                isLoading: false,
+            });
+        }
+    },
+
     removeBook: (bookId) => removeBook(set, bookId),
     updateBook: (bookId, updatedBook) => updateBook(set, bookId, updatedBook),
+
     // UI Methods
     toggleFilter: (filter) =>
         set((state) => ({
@@ -70,7 +109,6 @@ const useBookshelfStore = create<BookshelfState>((set, get) => ({
     setCurrentBook: (book) => set({ currentBook: book }),
     clearError: () => set({ error: null }),
 
-    // Updated note methods to accept the full note object
     addQuote: async (bookId, note) => {
         const { books } = get();
         const book = books.find((b) => b.id === bookId);
@@ -130,6 +168,7 @@ const useBookshelfStore = create<BookshelfState>((set, get) => ({
 
         await updateBook(set, bookId, { memorable: updatedMemorables });
     },
+
     // Updated deleteNote function using only string IDs
     deleteNote: async (bookId, type, noteId) => {
         const { books } = get();

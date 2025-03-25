@@ -27,7 +27,7 @@ const BOOK_CATEGORIES: { key: BookCategoryFilterKey; label: string }[] = [
 ];
 
 const BookshelfModal = ({ book }: BookshelfModalProps) => {
-    const { addBook, isLoading } = useBookshelfStore();
+    const { addBook, isLoading, books } = useBookshelfStore();
     const { user } = useAuthStore();
     const [filters, setFilters] = useState<
         Record<BookCategoryFilterKey, boolean>
@@ -47,17 +47,48 @@ const BookshelfModal = ({ book }: BookshelfModalProps) => {
     const [startDate, setStartDate] = useState<Date | null>(null);
     const [isOpen, setIsOpen] = useState(false); // Control modal open/close
 
-    // Reset state when modal opens/closes
+    // Load existing book data when modal opens
     useEffect(() => {
-        if (!isOpen) {
-            // Reset only when closed
-            return;
+        if (!isOpen || !user) return;
+
+        // Find the book in the user's bookshelf
+        const userBook = books.find((b) => b.id === book.id);
+
+        if (userBook) {
+            // Set filters based on existing book data
+            setFilters({
+                wantToRead: userBook.wantToRead || false,
+                reading: userBook.reading || false,
+                read: userBook.read || false,
+                readAgain: userBook.readAgain || false,
+                addedNoFlag: userBook.addedNoFlag || false,
+            });
+
+            // Set rating from existing book data
+            setRating(userBook.rating || null);
+
+            // Set categories from existing book data
+            setCategories(userBook.categories || []);
+
+            // Set start date if available
+            setStartDate(
+                userBook.startDate ? new Date(userBook.startDate) : null
+            );
         }
-        // Form state is preserved intentionally
-    }, [isOpen]);
+    }, [isOpen, user, book.id, books]);
 
     const toggleFilter = (key: BookCategoryFilterKey) => {
         setFilters((prev) => ({ ...prev, [key]: !prev[key] }));
+    };
+
+    // Handle rating change
+    const handleRatingChange = (newRating: number) => {
+        // If clicking the same star again, toggle it off
+        if (rating === newRating) {
+            setRating(null);
+        } else {
+            setRating(newRating);
+        }
     };
 
     const handleAddToBookshelf = async () => {
@@ -81,7 +112,7 @@ const BookshelfModal = ({ book }: BookshelfModalProps) => {
             imgUrl: book.imgUrl || null,
             ...filters,
             addedNoFlag: hasNoFlag,
-            rating,
+            rating, // This will save the rating to the database
             startDate: filters.reading ? startDate?.toISOString() : null,
         };
 
@@ -158,7 +189,7 @@ const BookshelfModal = ({ book }: BookshelfModalProps) => {
                                     <button
                                         key={star}
                                         type="button"
-                                        onClick={() => setRating(star)}
+                                        onClick={() => handleRatingChange(star)}
                                         onMouseEnter={() =>
                                             setHoverRating(star)
                                         }
@@ -166,6 +197,7 @@ const BookshelfModal = ({ book }: BookshelfModalProps) => {
                                             setHoverRating(null)
                                         }
                                         className="text-accent-accent hover:scale-110 transition-transform mt-1"
+                                        aria-label={`Rate ${star} stars`}
                                     >
                                         {filled ? (
                                             <FaStar className="w-6 h-6" />
