@@ -1,7 +1,7 @@
 "use client";
 import Form from "next/form";
 import { usePathname, useSearchParams } from "next/navigation";
-import { Button } from "./ui/button";
+import ButtonSearch from "./ButtonSearch";
 import { Input } from "./ui/input";
 
 const SearchField = () => {
@@ -19,13 +19,7 @@ const SearchField = () => {
                     defaultValue={searchParams.get("q") || ""}
                     className="input input-primary w-full"
                 />
-                <Button
-                    className="btn btn-soft btn-primary"
-                    variant="outline"
-                    type="submit"
-                >
-                    Search
-                </Button>
+                <ButtonSearch type="submit">Search</ButtonSearch>
             </Form>
         </>
     );

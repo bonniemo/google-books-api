@@ -4,7 +4,7 @@ import { Book, BookNote } from "@/types/bookAppTypes";
 import { getLabel } from "@/utils/utils";
 import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
-import NotesButton from "./NotesButton";
+import ButtonNotes from "./ButtonNotes";
 import { Button } from "./ui/button";
 import {
     Dialog,
@@ -95,9 +95,9 @@ const UserBookNotesModal = ({
     return (
         <Dialog open={isOpen} onOpenChange={setIsOpen}>
             <DialogTrigger asChild>
-                <NotesButton onClick={() => setIsOpen(true)}>
+                <ButtonNotes onClick={() => setIsOpen(true)}>
                     {label}
-                </NotesButton>
+                </ButtonNotes>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[425px] border-none bg-accent-light rounded-lg">
                 <DialogHeader>
