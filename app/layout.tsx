@@ -19,7 +19,7 @@ export default function RootLayout({
 }>) {
     return (
         <html lang="en" suppressHydrationWarning>
-            <body className="bg-base-light dark:bg-base-night text-base-dark dark:text-base-light px-2 sm:px-4">
+            <body className="bg-base-light dark:bg-base-night text-base-dark dark:text-base-light px-2 sm:px-6">
                 <AuthProvider>
                     <ThemeProvider
                         attribute="class"

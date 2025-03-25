@@ -11,7 +11,7 @@ export default {
         extend: {
             colors: {
                 base: {
-                    night: "#0E0E11",
+                    night: "#18181B",
                     light: "#F2F9F9",
                     dark: "#1A2C32",
                 },

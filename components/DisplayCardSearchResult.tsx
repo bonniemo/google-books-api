@@ -30,14 +30,14 @@ const DisplayCardSearchResult = (props: DisplayCardSearchResultProps) => {
     const isInShelf = !!bookInShelf;
 
     return (
-        <article className="w-full rounded-r-lg rounded-l-xl grid grid-cols-12 bg-accent-light text-base-dark shadow-xl">
+        <article className="rounded-r-lg rounded-l-xl grid grid-cols-12 bg-accent-light text-base-dark shadow-xl">
             <div className="bg-base-dark rounded-l-lg col-start-1 col-span-2 row-start-1"></div>
             {/* Thumbnail section */}
             <div className="col-span-4 flex mt-4 col-start-1 col-end-5 justify-center row-start-1">
                 <img
                     src={props.imgUrl}
                     alt={`Book cover of ${props.title}`}
-                    className="max-h-[11rem] object-cover rounded-lg mr-8 mb-4"
+                    className="max-h-[11rem] max-w-[7rem] object-cover rounded-lg mr-8 mb-4"
                 />
             </div>
 
@@ -69,13 +69,13 @@ const DisplayCardSearchResult = (props: DisplayCardSearchResultProps) => {
                             <p className="text-sm">
                                 {showFullDescription
                                     ? props.description
-                                    : `${props.description.slice(0, 150)}${
-                                          props.description.length > 150
+                                    : `${props.description.slice(0, 100)}${
+                                          props.description.length > 100
                                               ? "..."
                                               : ""
                                       }`}
                             </p>
-                            {props.description.length > 150 && (
+                            {props.description.length > 100 && (
                                 <button
                                     className="text-xs underline text-primary mt-1"
                                     onClick={() =>
