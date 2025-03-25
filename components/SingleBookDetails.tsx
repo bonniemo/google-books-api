@@ -73,7 +73,6 @@ const SingleBookDetails = () => {
                 />
 
                 <UserNotes book={book} loadBooks={loadBooks} type="quote" />
-
                 <UserNotes book={book} loadBooks={loadBooks} type="memorable" />
             </section>
         </>

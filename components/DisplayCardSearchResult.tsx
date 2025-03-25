@@ -77,7 +77,7 @@ const DisplayCardSearchResult = (props: DisplayCardSearchResultProps) => {
                             </p>
                             {props.description.length > 100 && (
                                 <button
-                                    className="text-xs underline text-primary mt-1"
+                                    className="text-xs underline text-primary mt-1 mb-2"
                                     onClick={() =>
                                         setShowFullDescription(
                                             !showFullDescription

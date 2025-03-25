@@ -11,11 +11,12 @@ export default {
         extend: {
             colors: {
                 base: {
-                    night: "#18181B",
+                    night: "#0E0E11",
                     light: "#F2F9F9",
                     dark: "#1A2C32",
                 },
                 accent: {
+                    night: "#18181B",
                     dark: "#3C747E",
                     light: "#C0DFE1",
                     accent: "#79B6BC",

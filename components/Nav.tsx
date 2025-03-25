@@ -6,7 +6,7 @@ import Settings from "./Settings";
 
 const Nav = () => {
     return (
-        <section className=" px-2 py-4 bg-base-night opacity-80">
+        <section className=" px-2 py-4 bg-base-night opacity-90 text-base-light">
             <div className="flex justify-between  md:justify-end items-center max-w-md md:max-w-full m-auto md:m-0 gap-8">
                 <Link href="/" className="flex flex-col items-center">
                     <ImHome className="min-w-7 min-h-7" />
