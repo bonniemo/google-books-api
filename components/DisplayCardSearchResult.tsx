@@ -105,7 +105,11 @@ const DisplayCardSearchResult = (props: DisplayCardSearchResultProps) => {
                 {props.description && (
                     <div className="mt-2">
                         <div className="relative">
-                            <p className="text-sm">
+                            <p
+                                className={`${
+                                    props.description.length < 100 && "mb-2"
+                                } text-sm`}
+                            >
                                 {showFullDescription
                                     ? props.description
                                     : `${props.description.slice(0, 100)}${
