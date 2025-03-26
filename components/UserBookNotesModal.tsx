@@ -5,7 +5,7 @@ import { getLabel } from "@/utils/utils";
 import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import ButtonNotes from "./ButtonNotes";
-import { Button } from "./ui/button";
+
 import {
     Dialog,
     DialogContent,
@@ -17,6 +17,7 @@ import {
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 import { Textarea } from "./ui/textarea";
+import Button from "./Button";
 
 interface UserBookNotesModalProps {
     type: string;
@@ -99,7 +100,7 @@ const UserBookNotesModal = ({
                     {label}
                 </ButtonNotes>
             </DialogTrigger>
-            <DialogContent className="sm:max-w-[425px] border-none bg-accent-light rounded-lg">
+            <DialogContent className="sm:max-w-[425px] border-none bg-accent-night text-base-light rounded-lg">
                 <DialogHeader>
                     <DialogTitle>Add {label}</DialogTitle>
                 </DialogHeader>
@@ -111,7 +112,7 @@ const UserBookNotesModal = ({
                         className=" p-2 border rounded mt-2"
                         value={heading}
                         onChange={(e) => setHeading(e.target.value)}
-                        placeholder={`Enter your ${type} here...`}
+                        placeholder={`Heading`}
                     />
                 </Label>
                 <div className="flex gap-4">

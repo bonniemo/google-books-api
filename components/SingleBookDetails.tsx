@@ -2,12 +2,23 @@ import useBookshelfStore from "@/stores/useBookshelfStore";
 import { formatDate } from "@/utils/utils";
 import { useEffect, useState } from "react";
 import { FaRegStar, FaStar } from "react-icons/fa6";
+import RadioButtons from "./RadioButtons";
 import UserNotes from "./UserNotes";
+
+type NoteType = "quote" | "reflection" | "memorable";
 
 const SingleBookDetails = () => {
     const { currentBook, loadBooks, books, updateBook } = useBookshelfStore();
     const [rating, setRating] = useState<number | null>(null);
     const [hoverRating, setHoverRating] = useState<number | null>(null);
+    const [selectedOption, setSelectedOption] =
+        useState<NoteType>("reflection");
+
+    const radioOptions: Array<{ label: string; value: NoteType }> = [
+        { label: "Reflections", value: "reflection" },
+        { label: "Quotes", value: "quote" },
+        { label: "Memorables", value: "memorable" },
+    ];
 
     useEffect(() => {
         loadBooks();
@@ -91,16 +102,19 @@ const SingleBookDetails = () => {
                 {book.finishDate && <p>Finished reading {book.finishDate}</p>}
             </section>
 
-            <section className="mt-8 space-y-20">
-                <UserNotes
-                    book={book}
-                    loadBooks={loadBooks}
-                    type="reflection"
-                />
+            <h1 className="text-lg font-bold mt-8 mb-2">Choose an Option</h1>
+            <RadioButtons<"quote" | "reflection" | "memorable">
+                options={radioOptions}
+                name="my-radio"
+                value={selectedOption}
+                onChange={setSelectedOption}
+            />
 
-                <UserNotes book={book} loadBooks={loadBooks} type="quote" />
-                <UserNotes book={book} loadBooks={loadBooks} type="memorable" />
-            </section>
+            <UserNotes
+                book={book}
+                loadBooks={loadBooks}
+                type={selectedOption}
+            />
         </>
     );
 };

@@ -56,9 +56,9 @@ const UserNotes = ({ book, loadBooks, type }: UserNotesProps) => {
     };
 
     return (
-        <section className=" rounded-lg pb-8 my-12 bg-opacity-50 dark:bg-opacity-100 drop-shadow-lg">
+        <section className="rounded-lg my-8 bg-opacity-50 dark:bg-opacity-100 drop-shadow-lg">
             <Divider />
-            <div className="flex justify-between items-center mt-8 bg-opacity-50">
+            <div className="flex justify-between items-center mt-6 bg-opacity-50">
                 <h3 className="text-2xl">{typePlural}</h3>
                 <UserBookNotesModal
                     type={type}

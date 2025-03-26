@@ -36,18 +36,13 @@ const DisplayCardSearchResult = (props: DisplayCardSearchResultProps) => {
     useEffect(() => {
         if (bookInShelf && bookInShelf.rating) {
             setRating(bookInShelf.rating);
-        } else if (props.rating) {
-            setRating(props.rating);
         }
-    }, [bookInShelf, props.rating]);
+    }, [bookInShelf]);
 
     const handleRatingChange = async (newRating: number) => {
         const updatedRating = rating === newRating ? null : newRating;
         setRating(updatedRating);
-
-        if (isInShelf) {
-            await updateBook(props.id, { rating: updatedRating });
-        }
+        await updateBook(props.id, { rating: updatedRating });
     };
 
     return (
@@ -72,36 +67,43 @@ const DisplayCardSearchResult = (props: DisplayCardSearchResultProps) => {
                     <p>Categories: {props.categories.join(", ")}</p>
                 )}
                 {props.pageCount && <p>Pages: {props.pageCount}</p>}
-                <label className="flex items-center gap-1">
-                    <span>Rating:</span>
-                    <div className="flex items-center gap-1">
-                        {[1, 2, 3, 4, 5].map((star) => {
-                            const filled =
-                                (hoverRating !== null && star <= hoverRating) ||
-                                (hoverRating === null &&
-                                    rating !== null &&
-                                    star <= rating);
+                {isInShelf && (
+                    <label className="flex items-center gap-1">
+                        <span>Rating:</span>
+                        <div className="flex items-center gap-1">
+                            {[1, 2, 3, 4, 5].map((star) => {
+                                const filled =
+                                    (hoverRating !== null &&
+                                        star <= hoverRating) ||
+                                    (hoverRating === null &&
+                                        rating !== null &&
+                                        star <= rating);
 
-                            return (
-                                <button
-                                    key={star}
-                                    type="button"
-                                    onClick={() => handleRatingChange(star)}
-                                    onMouseEnter={() => setHoverRating(star)}
-                                    onMouseLeave={() => setHoverRating(null)}
-                                    className="text-accent-accent hover:scale-110 transition-transform mt-1"
-                                    aria-label={`Rate ${star} stars`}
-                                >
-                                    {filled ? (
-                                        <FaStar className="w-6 h-6" />
-                                    ) : (
-                                        <FaRegStar className="w-6 h-6" />
-                                    )}
-                                </button>
-                            );
-                        })}
-                    </div>
-                </label>
+                                return (
+                                    <button
+                                        key={star}
+                                        type="button"
+                                        onClick={() => handleRatingChange(star)}
+                                        onMouseEnter={() =>
+                                            setHoverRating(star)
+                                        }
+                                        onMouseLeave={() =>
+                                            setHoverRating(null)
+                                        }
+                                        className="text-accent-accent hover:scale-110 transition-transform mt-1"
+                                        aria-label={`Rate ${star} stars`}
+                                    >
+                                        {filled ? (
+                                            <FaStar className="w-6 h-6" />
+                                        ) : (
+                                            <FaRegStar className="w-6 h-6" />
+                                        )}
+                                    </button>
+                                );
+                            })}
+                        </div>
+                    </label>
+                )}
                 {props.description && (
                     <div className="mt-2">
                         <div className="relative">
