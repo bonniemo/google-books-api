@@ -1,3 +1,5 @@
+import { DatePicker } from "@/components/DatePicker";
+
 const Home = () => {
     return (
         <>

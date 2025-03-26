@@ -1,5 +1,6 @@
 "use client";
 import { Checkbox } from "@/components/ui/checkbox";
+
 import {
     Dialog,
     DialogContent,
@@ -14,6 +15,7 @@ import { Book, BookCategoryFilterKey } from "@/types/bookAppTypes";
 import { useEffect, useState } from "react";
 import { BiSolidBookHeart } from "react-icons/bi";
 import { FaRegStar, FaStar } from "react-icons/fa6";
+import DatePicker from "./DatePicker";
 
 export type BookshelfModalProps = {
     book: Book;
@@ -134,7 +136,8 @@ const BookshelfModal = ({ book }: BookshelfModalProps) => {
 
             <DialogContent
                 className="bg-accent-light text-base-dark border p-8 border-none rounded-lg max-w-md w-full"
-                onPointerDownOutside={(e) => e.preventDefault()} // Prevent closing when clicking on date picker
+                onInteractOutside={(e) => e.preventDefault()} // Prevent closing when clicking outside
+                onEscapeKeyDown={(e) => e.preventDefault()} // Prevent closing on escape key
             >
                 <DialogHeader>
                     <DialogTitle className="leading-relaxed text-left">
@@ -160,16 +163,14 @@ const BookshelfModal = ({ book }: BookshelfModalProps) => {
                     ))}
 
                     {filters.reading && (
-                        <div className="mt-4 z-50">
+                        <div className="mt-4">
                             <label className="block mb-2 font-semibold">
                                 Started Reading:
                             </label>
-                            <div className="relative z-50">
-                                {/* <DatePicker
-                                    date={startDate}
-                                    setDate={setStartDate}
-                                /> */}
-                            </div>
+                            <DatePicker
+                                date={startDate}
+                                setDate={setStartDate}
+                            />
                         </div>
                     )}
 
@@ -230,7 +231,7 @@ const BookshelfModal = ({ book }: BookshelfModalProps) => {
 
                 <div className="flex justify-between gap-2 mt-6">
                     <button
-                        className="px-4 py-2  border-2 border-accent-accent rounded-md shadow-md hover:border-accent-soft hover:bg-accent-soft"
+                        className="px-4 py-2 border-2 border-accent-accent rounded-md shadow-md hover:border-accent-soft hover:bg-accent-soft"
                         onClick={() => setIsOpen(false)}
                         disabled={isLoading}
                     >
