@@ -8,9 +8,9 @@ type BooksCategoryDisplayProps = {
 
 const BooksCategoryDisplay = ({ title, books }: BooksCategoryDisplayProps) => {
     return (
-        <section className="my-8">
+        <section className="my-4 ">
             <h3 className="mb-4 text-lg font-bold tracking-wider">{title}</h3>
-            <ul className="flex flex-col gap-6">
+            <ul className="flex flex-wrap gap-6">
                 {books.map((book) => (
                     <li key={book.id}>
                         <DisplayCardSearchResult
