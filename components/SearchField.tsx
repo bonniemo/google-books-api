@@ -10,7 +10,10 @@ const SearchField = () => {
 
     return (
         <>
-            <Form action={pathname} className="flex w-full gap-4">
+            <Form
+                action={pathname}
+                className="flex items-center max-w-4xl w-full gap-4 m-auto"
+            >
                 <Input
                     key={searchParams.get("q")}
                     type="text"

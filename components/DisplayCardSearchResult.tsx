@@ -46,18 +46,18 @@ const DisplayCardSearchResult = (props: DisplayCardSearchResultProps) => {
     };
 
     return (
-        <article className="rounded-r-lg rounded-l-xl grid grid-cols-12 bg-accent-light text-base-dark shadow-xl">
-            <div className="bg-base-dark rounded-l-lg col-start-1 col-span-2 row-start-1"></div>
-            <div className="col-span-4 flex mt-4 col-start-1 col-end-5 justify-center row-start-1">
+        <article className="rounded-r-lg rounded-l-xl grid grid-cols-6 gap-2 bg-accent-light text-base-dark shadow-xl w-full max-w-[48rem] xl:max-w-[34rem]">
+            <div className="bg-base-dark rounded-l-lg col-start-1 col-end-2 row-start-1 row-end-3 sm:row-end-2 w-2 sm:w-full"></div>
+            <div className=" flex mt-4 col-start-1 sm:col-end-3 col-end-5 sm:justify-center pl-4 sm:pl-0 row-start-1">
                 <img
                     src={props.imgUrl}
                     alt={`Book cover of ${props.title}`}
-                    className="max-h-[11rem] max-w-[7rem] object-cover rounded-lg mr-8 mb-4"
+                    className=" max-w-[80%] object-contain rounded-lg mb-4"
                 />
             </div>
 
             {/* Info section */}
-            <section className="col-span-7 pt-4 -ml-4 mr-4 text-sm">
+            <section className="sm:col-start-3 sm:col-end-6 sm:row-start-1 row-start-2 col-start-1 col-end-7 mr-2 sm:mr-0 sm:pt-4 pl-4 sm:pl-0  mb-4 text-sm">
                 <h2 className="text-lg font-semibold">
                     {props.title || "Untitled"}
                 </h2>
@@ -122,7 +122,7 @@ const DisplayCardSearchResult = (props: DisplayCardSearchResultProps) => {
                             </p>
                             {props.description.length > 100 && (
                                 <button
-                                    className="text-xs underline text-primary mt-1 mb-2"
+                                    className="text-xs underline text-primary mt-1"
                                     onClick={() =>
                                         setShowFullDescription(
                                             !showFullDescription
@@ -139,7 +139,7 @@ const DisplayCardSearchResult = (props: DisplayCardSearchResultProps) => {
                 )}
             </section>
 
-            <section className="col-span-1 flex flex-col mt-2">
+            <section className="col-start-6 sm:row-start-1 sm:col-end-7 flex items-center flex-col mt-2">
                 {isInShelf ? (
                     <>
                         <BookPageBtn

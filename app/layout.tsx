@@ -37,7 +37,7 @@ export default function RootLayout({
                             <Settings />
                             <ThemeToggleBtn />
                         </div>
-                        <div className="mb-36">{children}</div>
+                        <div className="mb-24">{children}</div>
                         {/* bottom menu for mobile */}
                         <div className="md:hidden fixed bottom-0 left-0 right-0 z-10 bg-background">
                             <Nav />
