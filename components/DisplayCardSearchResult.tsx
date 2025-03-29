@@ -34,7 +34,7 @@ const DisplayCardSearchResult = (props: DisplayCardSearchResultProps) => {
     const isInShelf = !!bookInShelf;
 
     useEffect(() => {
-        if (bookInShelf && bookInShelf.rating) {
+        if (bookInShelf?.rating) {
             setRating(bookInShelf.rating);
         }
     }, [bookInShelf]);
