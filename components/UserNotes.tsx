@@ -1,5 +1,11 @@
 import useBookshelfStore from "@/stores/useBookshelfStore";
 import { Book, BookNote } from "@/types/bookAppTypes";
+
+import {
+    NoteType,
+    getNotesArray,
+    prepareDeleteNote,
+} from "@/utils/book-note-utils";
 import { formatDate, getLabel } from "@/utils/utils";
 import { useState } from "react";
 import { BsFillTrash3Fill } from "react-icons/bs";
@@ -16,37 +22,23 @@ import UserBookNotesModal from "./UserBookNotesModal";
 interface UserNotesProps {
     book: Book;
     loadBooks: () => void;
-    type: "quote" | "reflection" | "memorable";
+    type: NoteType;
 }
 
 const UserNotes = ({ book, loadBooks, type }: UserNotesProps) => {
     const [deletingId, setDeletingId] = useState<string | null>(null);
-    const { deleteNote } = useBookshelfStore();
+    const { updateBook } = useBookshelfStore();
 
     const label = getLabel(type);
-
     const typePlural = `${label}s`;
-
-    const getNotes = (): BookNote[] => {
-        switch (type) {
-            case "quote":
-                return Array.isArray(book.quotes) ? book.quotes : [];
-            case "reflection":
-                return Array.isArray(book.reflections) ? book.reflections : [];
-            case "memorable":
-                return Array.isArray(book.memorable) ? book.memorable : [];
-            default:
-                return [];
-        }
-    };
-
-    const notes = getNotes();
+    const notes = getNotesArray(book, type);
 
     const handleDelete = async (noteId: string) => {
         setDeletingId(noteId);
 
         try {
-            await deleteNote(book.id, type, noteId);
+            const updateData = prepareDeleteNote(book, type, noteId);
+            await updateBook(book.id, updateData);
             loadBooks();
         } catch (error) {
             console.error(`Error deleting ${type}:`, error);
@@ -63,7 +55,7 @@ const UserNotes = ({ book, loadBooks, type }: UserNotesProps) => {
                 <UserBookNotesModal
                     type={type}
                     bookId={book.id}
-                    onSaved={() => loadBooks()}
+                    onSaved={loadBooks}
                 />
             </div>
             <ul className="mt-8 space-y-4">

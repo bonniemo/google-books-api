@@ -1,11 +1,12 @@
 "use client";
 import useBookshelfStore from "@/stores/useBookshelfStore";
-import { Book, BookNote } from "@/types/bookAppTypes";
 import { getLabel } from "@/utils/utils";
 import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import ButtonNotes from "./ButtonNotes";
 
+import { NoteType, prepareAddNote } from "@/utils/book-note-utils";
+import Button from "./Button";
 import {
     Dialog,
     DialogContent,
@@ -17,10 +18,9 @@ import {
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 import { Textarea } from "./ui/textarea";
-import Button from "./Button";
 
 interface UserBookNotesModalProps {
-    type: string;
+    type: NoteType;
     bookId: string;
     onSaved?: () => void;
 }
@@ -30,7 +30,7 @@ const UserBookNotesModal = ({
     bookId,
     onSaved,
 }: UserBookNotesModalProps) => {
-    const { updateBook, books } = useBookshelfStore();
+    const { updateBook, getBookById } = useBookshelfStore();
     const [heading, setHeading] = useState("");
     const [fromPage, setFromPage] = useState<string>("");
     const [toPage, setToPage] = useState<string>("");
@@ -45,41 +45,20 @@ const UserBookNotesModal = ({
         setIsSubmitting(true);
 
         try {
-            const currentBook = books.find((book) => book.id === bookId);
+            const book = getBookById(bookId);
+            if (!book) throw new Error("Book not found");
 
-            if (!currentBook) {
-                throw new Error("Book not found");
-            }
-
-            // Create the new note with the required structure
-            const newNote: BookNote = {
+            const newNote = {
                 id: uuidv4(),
-                heading: heading,
+                heading,
                 fromPage: fromPage ? Number(fromPage) : undefined,
                 toPage: toPage ? Number(toPage) : undefined,
                 text: content,
-                dateSaved: new Date().toISOString(),
             };
 
-            // Create the update object based on note type
-            const updateData: Partial<Book> = {};
-
-            if (type === "reflection") {
-                const existingReflections = currentBook.reflections || [];
-                updateData.reflections = [...existingReflections, newNote];
-            } else if (type === "quote") {
-                const existingQuotes = currentBook.quotes || [];
-                updateData.quotes = [...existingQuotes, newNote];
-            } else if (type === "memorable") {
-                const existingMemorables = currentBook.memorable || [];
-                updateData.memorable = [...existingMemorables, newNote];
-            }
-
+            const updateData = prepareAddNote(book, type, newNote);
             await updateBook(bookId, updateData);
-
-            if (onSaved) {
-                onSaved();
-            }
+            if (onSaved) onSaved();
 
             setIsOpen(false);
             setHeading("");
