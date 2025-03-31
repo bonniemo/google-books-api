@@ -12,7 +12,7 @@ const BooksCategoryDisplay = ({ title, books }: BooksCategoryDisplayProps) => {
             <h3 className="mb-4 text-lg font-bold tracking-wider">{title}</h3>
             <ul className="flex flex-wrap gap-6">
                 {books.map((book) => (
-                    <li key={book.id}>
+                    <li className="w-full" key={book.id}>
                         <DisplayCardSearchResult
                             id={book.id}
                             imgUrl={book.imgUrl || ""}
