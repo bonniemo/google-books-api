@@ -1,50 +1,21 @@
 "use client";
 import useBookshelfStore from "@/stores/useBookshelfStore";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { BiSolidBookContent } from "react-icons/bi";
 import noCoverImg from "../public/no-cover.png";
 import BookPageBtn from "./BookPageBtn";
 import BookshelfModal from "./BookshelfModal";
 
+import { Book } from "@/types/bookAppTypes";
+import { formatDate } from "@/utils/utils";
 import { FaRegStar, FaStar } from "react-icons/fa6";
 
-interface DisplayCardSearchResultProps {
-    id: string;
-    imgUrl: string;
-    title?: string;
-    authors?: string[];
-    publishedDate?: string;
-    description?: string;
-    pageCount?: number;
-    categories?: string[];
-    averageRating?: number;
-    wantToRead?: boolean;
-    reading?: boolean;
-    read?: boolean;
-    readAgain?: boolean;
-    rating?: number | null;
-}
-
-const DisplayCardSearchResult = (props: DisplayCardSearchResultProps) => {
+const DisplayCardSearchResult = (props: Book) => {
     const [showFullDescription, setShowFullDescription] = useState(false);
-    const [rating, setRating] = useState<number | null>(null);
-    const [hoverRating, setHoverRating] = useState<number | null>(null);
-    const { books, removeBook, updateBook } = useBookshelfStore();
-
+    const { books, removeBook } = useBookshelfStore();
     const bookInShelf = books.find((book) => book.id === props.id);
     const isInShelf = !!bookInShelf;
-
-    useEffect(() => {
-        if (bookInShelf?.rating) {
-            setRating(bookInShelf.rating);
-        }
-    }, [bookInShelf]);
-
-    const handleRatingChange = async (newRating: number) => {
-        const updatedRating = rating === newRating ? null : newRating;
-        setRating(updatedRating);
-        await updateBook(props.id, { rating: updatedRating });
-    };
+    const rating = bookInShelf?.rating || null;
 
     return (
         <article className="rounded-r-lg rounded-l-xl grid grid-cols-6 gap-2 bg-accent-light text-base-dark shadow-xl w-full max-w-[48rem] xl:max-w-[34rem]">
@@ -58,7 +29,7 @@ const DisplayCardSearchResult = (props: DisplayCardSearchResultProps) => {
             </div>
 
             {/* Info section */}
-            <section className="w-full sm:col-start-3 sm:col-end-6 sm:row-start-1 row-start-2 col-start-1 col-end-7 mr-2 sm:mr-0 sm:pt-4 pl-4 sm:pl-0  mb-4 text-sm">
+            <section className="w-full sm:col-start-3 sm:col-end-6 sm:row-start-1 row-start-2 col-start-1 col-end-7 mr-2 sm:mr-0 sm:pt-4 pl-4 sm:pl-0  mb-4 text-sm leading-relaxed">
                 <h2 className="text-lg font-semibold">
                     {props.title || "Untitled"}
                 </h2>
@@ -69,41 +40,43 @@ const DisplayCardSearchResult = (props: DisplayCardSearchResultProps) => {
                 )}
                 {props.pageCount && <p>Pages: {props.pageCount}</p>}
                 {isInShelf && (
-                    <label className="flex items-center gap-1">
-                        <span>Rating:</span>
-                        <div className="flex items-center gap-1">
-                            {[1, 2, 3, 4, 5].map((star) => {
-                                const filled =
-                                    (hoverRating !== null &&
-                                        star <= hoverRating) ||
-                                    (hoverRating === null &&
-                                        rating !== null &&
-                                        star <= rating);
+                    <>
+                        {bookInShelf.startDate && (
+                            <div>
+                                Started Reading:{" "}
+                                {formatDate(bookInShelf.startDate)}
+                            </div>
+                        )}
+                        {bookInShelf.finishDate && (
+                            <div>
+                                Finished Reading:{" "}
+                                {formatDate(bookInShelf.finishDate)}
+                            </div>
+                        )}
+                        <label className="flex items-center gap-1 mt-1">
+                            <span>Rating:</span>
+                            <div className="flex items-center gap-1">
+                                {[1, 2, 3, 4, 5].map((star) => {
+                                    const filled =
+                                        rating !== null && star <= rating;
 
-                                return (
-                                    <button
-                                        key={star}
-                                        type="button"
-                                        onClick={() => handleRatingChange(star)}
-                                        onMouseEnter={() =>
-                                            setHoverRating(star)
-                                        }
-                                        onMouseLeave={() =>
-                                            setHoverRating(null)
-                                        }
-                                        className="text-accent-accent hover:scale-110 transition-transform mt-1"
-                                        aria-label={`Rate ${star} stars`}
-                                    >
-                                        {filled ? (
-                                            <FaStar className="w-6 h-6" />
-                                        ) : (
-                                            <FaRegStar className="w-6 h-6" />
-                                        )}
-                                    </button>
-                                );
-                            })}
-                        </div>
-                    </label>
+                                    return (
+                                        <div
+                                            key={star}
+                                            className="text-base-dark"
+                                            aria-label={`Rate ${star} stars`}
+                                        >
+                                            {filled ? (
+                                                <FaStar className="w-5 h-5" />
+                                            ) : (
+                                                <FaRegStar className="w-5 h-5" />
+                                            )}
+                                        </div>
+                                    );
+                                })}
+                            </div>
+                        </label>
+                    </>
                 )}
                 {props.description && (
                     <div className="mt-2">

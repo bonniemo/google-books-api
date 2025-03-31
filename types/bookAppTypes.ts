@@ -26,9 +26,9 @@ export interface Book {
     reviewDate?: string | null;
     startDate?: string | null;
     finishDate?: string | null;
-    quotes?: BookNote[] | null; // Updated to BookNote with currentDate
-    reflections?: BookNote[] | null; // Updated to BookNote with currentDate
-    memorable?: BookNote[] | null; // Updated to BookNote with currentDate
+    quotes?: BookNote[] | null;
+    reflections?: BookNote[] | null;
+    memorable?: BookNote[] | null;
 }
 
 export type BookCategoryFilterKey =

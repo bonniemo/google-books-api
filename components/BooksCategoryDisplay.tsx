@@ -23,6 +23,11 @@ const BooksCategoryDisplay = ({ title, books }: BooksCategoryDisplayProps) => {
                             pageCount={book.pageCount ?? undefined}
                             categories={book.categories || undefined}
                             averageRating={book.averageRating ?? undefined}
+                            wantToRead={book.wantToRead ?? false}
+                            reading={book.reading ?? false}
+                            read={book.read ?? false}
+                            readAgain={book.readAgain ?? false}
+                            addedNoFlag={book.addedNoFlag ?? false}
                         />
                     </li>
                 ))}

@@ -60,7 +60,7 @@ const useBookshelfStore = create<BookshelfState>((set, get) => ({
     // Helper method to get book by ID
     getBookById: (bookId) => {
         const { books } = get();
-        return books.find((b) => b.id === bookId) || null;
+        return books.find((book) => book.id === bookId) || null;
     },
 
     // API Methods
