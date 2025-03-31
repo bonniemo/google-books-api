@@ -12,7 +12,7 @@ import { useAuthStore } from "@/stores/useAuthStore";
 import useBookshelfStore from "@/stores/useBookshelfStore";
 import { Book, BookCategoryFilterKey } from "@/types/bookAppTypes";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { BiSolidBookHeart } from "react-icons/bi";
 import { FaRegStar, FaStar } from "react-icons/fa6";
 import DatePicker from "./DatePicker";
@@ -47,45 +47,14 @@ const BookshelfModal = ({ book }: BookshelfModalProps) => {
         book.categories ?? []
     );
     const [startDate, setStartDate] = useState<Date | null>(null);
-    const [isOpen, setIsOpen] = useState(false); // Control modal open/close
-
-    // Load existing book data when modal opens
-    useEffect(() => {
-        if (!isOpen || !user) return;
-
-        // Find the book in the user's bookshelf
-        const userBook = books.find((b) => b.id === book.id);
-
-        if (userBook) {
-            // Set filters based on existing book data
-            setFilters({
-                wantToRead: userBook.wantToRead || false,
-                reading: userBook.reading || false,
-                read: userBook.read || false,
-                readAgain: userBook.readAgain || false,
-                addedNoFlag: userBook.addedNoFlag || false,
-            });
-
-            // Set rating from existing book data
-            setRating(userBook.rating || null);
-
-            // Set categories from existing book data
-            setCategories(userBook.categories || []);
-
-            // Set start date if available
-            setStartDate(
-                userBook.startDate ? new Date(userBook.startDate) : null
-            );
-        }
-    }, [isOpen, user, book.id, books]);
+    const [finishDate, setFinishDate] = useState<Date | null>(null);
+    const [isOpen, setIsOpen] = useState(false);
 
     const toggleFilter = (key: BookCategoryFilterKey) => {
         setFilters((prev) => ({ ...prev, [key]: !prev[key] }));
     };
 
-    // Handle rating change
     const handleRatingChange = (newRating: number) => {
-        // If clicking the same star again, toggle it off
         if (rating === newRating) {
             setRating(null);
         } else {
@@ -114,12 +83,13 @@ const BookshelfModal = ({ book }: BookshelfModalProps) => {
             imgUrl: book.imgUrl || null,
             ...filters,
             addedNoFlag: hasNoFlag,
-            rating, // This will save the rating to the database
-            startDate: filters.reading ? startDate?.toISOString() : null,
+            rating,
+            startDate: startDate?.toISOString(),
+            finishDate: finishDate?.toISOString(),
         };
 
         await addBook(newBook);
-        setIsOpen(false); // Close the modal after adding the book
+        setIsOpen(false);
     };
 
     return (
@@ -162,17 +132,19 @@ const BookshelfModal = ({ book }: BookshelfModalProps) => {
                         </div>
                     ))}
 
-                    {filters.reading && (
-                        <div className="mt-4">
-                            <label className="block mb-2 font-semibold">
-                                Started Reading:
-                            </label>
-                            <DatePicker
-                                date={startDate}
-                                setDate={setStartDate}
-                            />
-                        </div>
-                    )}
+                    <div className="mt-4">
+                        <label className="block mb-2 font-semibold">
+                            Started Reading:
+                        </label>
+                        <DatePicker date={startDate} setDate={setStartDate} />
+                    </div>
+
+                    <div className="mt-2">
+                        <label className="block mb-2 font-semibold">
+                            Finished Reading:
+                        </label>
+                        <DatePicker date={finishDate} setDate={setFinishDate} />
+                    </div>
 
                     <label className="mt-4 flex items-center gap-2">
                         <span className="block font-semibold">Rating:</span>
