@@ -1,7 +1,7 @@
 import useBookshelfStore from "@/stores/useBookshelfStore";
-import { formatDate } from "@/utils/utils";
 import { useEffect, useState } from "react";
 import { FaRegStar, FaStar } from "react-icons/fa6";
+import { DatePicker } from "./DatePicker";
 import RadioButtons from "./RadioButtons";
 import UserNotes from "./UserNotes";
 
@@ -10,6 +10,8 @@ type NoteType = "quote" | "reflection" | "memorable";
 const SingleBookDetails = () => {
     const { currentBook, loadBooks, books, updateBook } = useBookshelfStore();
     const [rating, setRating] = useState<number | null>(null);
+    const [startDate, setStartDate] = useState<Date | null>(null);
+    const [finishDate, setFinishDate] = useState<Date | null>(null);
     const [hoverRating, setHoverRating] = useState<number | null>(null);
     const [selectedOption, setSelectedOption] =
         useState<NoteType>("reflection");
@@ -66,7 +68,23 @@ const SingleBookDetails = () => {
                     <p>Categories: {book.categories.join(", ")}</p>
                 )}
                 {book.pageCount && <p>Pages: {book.pageCount}</p>}
-                <label className="flex items-center gap-1">
+                <div className="mt-2 flex gap-6">
+                    <div>
+                        <label className="block mb-2 font-semibold">
+                            Started Reading:
+                        </label>
+                        <DatePicker date={startDate} setDate={setStartDate} />
+                    </div>
+
+                    <div>
+                        <label className="block mb-2 font-semibold">
+                            Finished Reading:
+                        </label>
+                        <DatePicker date={finishDate} setDate={setFinishDate} />
+                    </div>
+                </div>
+
+                <label className="flex items-center gap-1 mt-4">
                     <span>Rating:</span>
                     <div className="flex items-center gap-1">
                         {[1, 2, 3, 4, 5].map((star) => {
@@ -96,10 +114,6 @@ const SingleBookDetails = () => {
                         })}
                     </div>
                 </label>
-                {book.startDate && (
-                    <p>Started reading: {formatDate(book.startDate)}</p>
-                )}
-                {book.finishDate && <p>Finished reading {book.finishDate}</p>}
             </section>
 
             <h1 className="text-lg font-bold mt-8 mb-2">Choose an Option</h1>

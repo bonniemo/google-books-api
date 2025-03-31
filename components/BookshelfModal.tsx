@@ -11,7 +11,6 @@ import {
 import { useAuthStore } from "@/stores/useAuthStore";
 import useBookshelfStore from "@/stores/useBookshelfStore";
 import { Book, BookCategoryFilterKey } from "@/types/bookAppTypes";
-
 import { useState } from "react";
 import { BiSolidBookHeart } from "react-icons/bi";
 import { FaRegStar, FaStar } from "react-icons/fa6";
