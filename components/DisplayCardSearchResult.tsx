@@ -2,6 +2,7 @@
 import useBookshelfStore from "@/stores/useBookshelfStore";
 import { useEffect, useState } from "react";
 import { BiSolidBookContent } from "react-icons/bi";
+import noCoverImg from "../public/no-cover.png";
 import BookPageBtn from "./BookPageBtn";
 import BookshelfModal from "./BookshelfModal";
 
@@ -50,14 +51,14 @@ const DisplayCardSearchResult = (props: DisplayCardSearchResultProps) => {
             <div className="bg-base-dark rounded-l-lg col-start-1 col-end-2 row-start-1 row-end-3 sm:row-end-2 w-2 sm:w-full"></div>
             <div className=" flex mt-4 col-start-1 sm:col-end-3 col-end-5 sm:justify-center pl-4 sm:pl-0 row-start-1">
                 <img
-                    src={props.imgUrl}
+                    src={props.imgUrl ? props.imgUrl : noCoverImg.src}
                     alt={`Book cover of ${props.title}`}
-                    className=" max-w-[80%] object-contain rounded-lg mb-4"
+                    className=" max-w-[80%] object-cover rounded-lg mb-4"
                 />
             </div>
 
             {/* Info section */}
-            <section className="sm:col-start-3 sm:col-end-6 sm:row-start-1 row-start-2 col-start-1 col-end-7 mr-2 sm:mr-0 sm:pt-4 pl-4 sm:pl-0  mb-4 text-sm">
+            <section className="w-full sm:col-start-3 sm:col-end-6 sm:row-start-1 row-start-2 col-start-1 col-end-7 mr-2 sm:mr-0 sm:pt-4 pl-4 sm:pl-0  mb-4 text-sm">
                 <h2 className="text-lg font-semibold">
                     {props.title || "Untitled"}
                 </h2>

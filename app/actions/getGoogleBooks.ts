@@ -9,7 +9,7 @@ export async function getGoogleBooks({
 }): Promise<GoogleBooksSearchResponse> {
     const API_KEY = process.env.NEXT_PUBLIC_GOOGLE_BOOKS_API_KEY;
     const lang = "en";
-    const googleBooksApiUrl = `https://www.googleapis.com/books/v1/volumes?q=${query}&maxResults=10&langRestrict=${lang}`;
+    const googleBooksApiUrl = `https://www.googleapis.com/books/v1/volumes?q=${query}&maxResults=40&langRestrict=${lang}`;
 
     try {
         const res = await fetch(googleBooksApiUrl);
