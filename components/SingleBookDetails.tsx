@@ -1,5 +1,5 @@
 import useBookshelfStore from "@/stores/useBookshelfStore";
-import { formatDateForStorage } from "@/utils/utils";
+
 import { useEffect, useState } from "react";
 import { FaRegStar, FaStar } from "react-icons/fa6";
 import noCoverImg from "../public/no-cover.png";
@@ -38,26 +38,12 @@ const SingleBookDetails = () => {
         if (book?.rating) {
             setRating(book.rating);
         }
-        // Convert string dates from database to Date objects for the state
+
         if (book?.startDate) {
-            try {
-                const formattedDate = formatDateForStorage(book.startDate);
-                if (formattedDate) {
-                    setStartDate(new Date(formattedDate));
-                }
-            } catch (error) {
-                console.error("Error parsing start date:", error);
-            }
+            console.log(book.startDate);
         }
         if (book?.finishDate) {
-            try {
-                const formattedDate = formatDateForStorage(book.finishDate);
-                if (formattedDate) {
-                    setFinishDate(new Date(formattedDate));
-                }
-            } catch (error) {
-                console.error("Error parsing finish date:", error);
-            }
+            console.log(book.finishDate);
         }
     }, [book]);
 
@@ -72,22 +58,16 @@ const SingleBookDetails = () => {
         await updateBook(book.id, { rating: updatedRating });
     };
 
-    // Convert Date object to ISO string for database storage
-    const convertDateForDB = (date: Date | null): string | null => {
-        if (!date) return null;
-        return date.toISOString().split("T")[0]; // Get YYYY-MM-DD format
-    };
-
     const changeStartDate = async (newDate: Date | null) => {
         setStartDate(newDate);
         // Convert Date to string for database storage
-        await updateBook(book.id, { startDate: convertDateForDB(newDate) });
+        await updateBook(book.id, { startDate: newDate });
     };
 
     const changeFinishDate = async (newDate: Date | null) => {
         setFinishDate(newDate);
         // Convert Date to string for database storage
-        await updateBook(book.id, { finishDate: convertDateForDB(newDate) });
+        await updateBook(book.id, { finishDate: newDate });
     };
 
     return (

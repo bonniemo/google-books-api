@@ -7,7 +7,6 @@ import BookPageBtn from "./BookPageBtn";
 import BookshelfModal from "./BookshelfModal";
 
 import { Book } from "@/types/bookAppTypes";
-import { formatDate } from "@/utils/utils";
 import { FaRegStar, FaStar } from "react-icons/fa6";
 
 const DisplayCardSearchResult = (props: Book) => {
@@ -25,7 +24,7 @@ const DisplayCardSearchResult = (props: Book) => {
                 <img
                     src={props.imgUrl ? props.imgUrl : noCoverImg.src}
                     alt={`Book cover of ${props.title}`}
-                    className=" max-w-[80%] object-cover rounded-lg mb-4"
+                    className="max-h-[16rem] max-w-[80%] object-cover rounded-lg mb-4"
                 />
             </div>
 
@@ -42,7 +41,7 @@ const DisplayCardSearchResult = (props: Book) => {
                 {props.pageCount && <p>Pages: {props.pageCount}</p>}
                 {isInShelf && (
                     <>
-                        {bookInShelf.startDate && (
+                        {/* {bookInShelf.startDate && (
                             <div>
                                 Started Reading:{" "}
                                 {formatDate(bookInShelf.startDate)}
@@ -53,7 +52,7 @@ const DisplayCardSearchResult = (props: Book) => {
                                 Finished Reading:{" "}
                                 {formatDate(bookInShelf.finishDate)}
                             </div>
-                        )}
+                        )} */}
                         <label className="flex items-center gap-1 mt-1">
                             <span>Rating:</span>
                             <div className="flex items-center gap-1">

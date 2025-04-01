@@ -24,8 +24,8 @@ export interface Book {
     addedNoFlag: boolean;
     rating?: number | null;
     reviewDate?: string | null;
-    startDate?: string | null;
-    finishDate?: string | null;
+    startDate?: Date | null;
+    finishDate?: Date | null;
     quotesArr?: BookNote[] | null;
     reflectionsArr?: BookNote[] | null;
     memorablesArr?: BookNote[] | null;
