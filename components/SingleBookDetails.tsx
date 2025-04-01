@@ -2,6 +2,7 @@ import useBookshelfStore from "@/stores/useBookshelfStore";
 import { formatDateForStorage } from "@/utils/utils";
 import { useEffect, useState } from "react";
 import { FaRegStar, FaStar } from "react-icons/fa6";
+import noCoverImg from "../public/no-cover.png";
 import { DatePicker } from "./DatePicker";
 import RadioButtons from "./RadioButtons";
 import UserNotes from "./UserNotes";
@@ -93,7 +94,7 @@ const SingleBookDetails = () => {
         <>
             <section className="text-sm">
                 <img
-                    src={book.imgUrl || ""}
+                    src={book.imgUrl ? book.imgUrl : noCoverImg.src}
                     alt={`Book cover of ${book.title}`}
                     className="h-72 object-contain object-center rounded"
                 />
