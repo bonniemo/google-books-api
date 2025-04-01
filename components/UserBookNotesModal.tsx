@@ -5,7 +5,6 @@ import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import ButtonNotes from "./ButtonNotes";
 
-import { NoteType, prepareAddNote } from "@/utils/book-note-utils";
 import Button from "./Button";
 import {
     Dialog,
@@ -19,6 +18,8 @@ import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 import { Textarea } from "./ui/textarea";
 
+type NoteType = "quote" | "reflection" | "memorable";
+
 interface UserBookNotesModalProps {
     type: NoteType;
     bookId: string;
@@ -30,7 +31,10 @@ const UserBookNotesModal = ({
     bookId,
     onSaved,
 }: UserBookNotesModalProps) => {
-    const { updateBook, getBookById } = useBookshelfStore();
+    const addQuote = useBookshelfStore((state) => state.addQuote);
+    const addReflection = useBookshelfStore((state) => state.addReflection);
+    const addMemorable = useBookshelfStore((state) => state.addMemorable);
+    const getBookById = useBookshelfStore((state) => state.getBookById);
     const [heading, setHeading] = useState("");
     const [fromPage, setFromPage] = useState<string>("");
     const [toPage, setToPage] = useState<string>("");
@@ -56,8 +60,19 @@ const UserBookNotesModal = ({
                 text: content,
             };
 
-            const updateData = prepareAddNote(book, type, newNote);
-            await updateBook(bookId, updateData);
+            // Use the appropriate store method based on note type
+            switch (type) {
+                case "quote":
+                    await addQuote(bookId, newNote);
+                    break;
+                case "reflection":
+                    await addReflection(bookId, newNote);
+                    break;
+                case "memorable":
+                    await addMemorable(bookId, newNote);
+                    break;
+            }
+
             if (onSaved) onSaved();
 
             setIsOpen(false);

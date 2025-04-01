@@ -73,6 +73,11 @@ const SearchResult = ({
                             averageRating={
                                 book.volumeInfo?.averageRating ?? undefined
                             }
+                            wantToRead={false}
+                            reading={false}
+                            read={false}
+                            readAgain={false}
+                            addedNoFlag={false}
                         />
                     );
                 })}

@@ -16,8 +16,12 @@ const BOOK_CATEGORIES: { key: BookCategoryFilterKey; label: string }[] = [
 ];
 
 const BookshelfDisplay = () => {
-    const { books, loadBooks, filters, toggleFilter, isLoading, error } =
-        useBookshelfStore();
+    const books = useBookshelfStore((state) => state.books);
+    const loadBooks = useBookshelfStore((state) => state.loadBooks);
+    const filters = useBookshelfStore((state) => state.filters);
+    const toggleFilter = useBookshelfStore((state) => state.toggleFilter);
+    const isLoading = useBookshelfStore((state) => state.isLoading);
+    const error = useBookshelfStore((state) => state.error);
     const { user } = useAuthStore();
     const router = useRouter();
 

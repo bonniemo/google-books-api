@@ -1,11 +1,5 @@
 import useBookshelfStore from "@/stores/useBookshelfStore";
 import { Book, BookNote } from "@/types/bookAppTypes";
-
-import {
-    NoteType,
-    getNotesArray,
-    prepareDeleteNote,
-} from "@/utils/book-note-utils";
 import { formatDate, getLabel } from "@/utils/utils";
 import { useState } from "react";
 import { BsFillTrash3Fill } from "react-icons/bs";
@@ -19,6 +13,23 @@ import {
 import { Button } from "./ui/button";
 import UserBookNotesModal from "./UserBookNotesModal";
 
+// Import the NoteType type
+export type NoteType = "quote" | "reflection" | "memorable";
+
+// Helper function to get the notes array based on type
+const getNotesArray = (book: Book, type: NoteType): BookNote[] => {
+    switch (type) {
+        case "quote":
+            return book.quotesArr || [];
+        case "reflection":
+            return book.reflectionsArr || [];
+        case "memorable":
+            return book.memorablesArr || [];
+        default:
+            return [];
+    }
+};
+
 interface UserNotesProps {
     book: Book;
     loadBooks: () => void;
@@ -27,7 +38,13 @@ interface UserNotesProps {
 
 const UserNotes = ({ book, loadBooks, type }: UserNotesProps) => {
     const [deletingId, setDeletingId] = useState<string | null>(null);
-    const { updateBook } = useBookshelfStore();
+
+    // Selective imports from store
+    const deleteQuote = useBookshelfStore((state) => state.deleteQuote);
+    const deleteReflection = useBookshelfStore(
+        (state) => state.deleteReflection
+    );
+    const deleteMemorable = useBookshelfStore((state) => state.deleteMemorable);
 
     const label = getLabel(type);
     const typePlural = `${label}s`;
@@ -37,8 +54,18 @@ const UserNotes = ({ book, loadBooks, type }: UserNotesProps) => {
         setDeletingId(noteId);
 
         try {
-            const updateData = prepareDeleteNote(book, type, noteId);
-            await updateBook(book.id, updateData);
+            // Use the appropriate delete function based on the note type
+            switch (type) {
+                case "quote":
+                    await deleteQuote(book.id, noteId);
+                    break;
+                case "reflection":
+                    await deleteReflection(book.id, noteId);
+                    break;
+                case "memorable":
+                    await deleteMemorable(book.id, noteId);
+                    break;
+            }
             loadBooks();
         } catch (error) {
             console.error(`Error deleting ${type}:`, error);

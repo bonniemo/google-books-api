@@ -23,18 +23,14 @@ const normalizeForComparison = (text: string) => {
 const GetBookFromUrl = () => {
     const params = useParams();
     const router = useRouter();
-
+    const books = useBookshelfStore((state) => state.books);
+    const loadBooks = useBookshelfStore((state) => state.loadBooks);
+    const currentBook = useBookshelfStore((state) => state.currentBook);
+    const setCurrentBook = useBookshelfStore((state) => state.setCurrentBook);
+    const isLoading = useBookshelfStore((state) => state.isLoading);
+    const error = useBookshelfStore((state) => state.error);
+    const clearError = useBookshelfStore((state) => state.clearError);
     const [initialLoading, setInitialLoading] = useState(true);
-
-    const {
-        books,
-        loadBooks,
-        currentBook,
-        setCurrentBook,
-        isLoading,
-        error,
-        clearError,
-    } = useBookshelfStore();
 
     useEffect(() => {
         // Clear any existing errors when component mounts to prevent error flash
@@ -83,15 +79,6 @@ const GetBookFromUrl = () => {
 
         setCurrentBook(foundBook || null);
     }, [params, books, isLoading]);
-
-    if (initialLoading || isLoading) {
-        return (
-            <div className="p-4">
-                <h1 className="text-xl mb-4">Loading book...</h1>
-                <p>Please wait while we retrieve it.</p>
-            </div>
-        );
-    }
 
     // Error state - only show if we're not in initial loading and it's a real error
     if (error && !initialLoading && books.length === 0) {

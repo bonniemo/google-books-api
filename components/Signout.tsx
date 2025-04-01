@@ -7,7 +7,7 @@ import { PiSignOutBold } from "react-icons/pi";
 
 const Signout = () => {
     const [isLoading, setIsLoading] = useState(false);
-    const { signOut } = useAuthStore();
+    const signOut = useAuthStore((state) => state.signOut);
     const router = useRouter();
 
     const handleSignOut = async () => {

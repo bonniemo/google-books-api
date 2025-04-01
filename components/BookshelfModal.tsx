@@ -28,7 +28,8 @@ const BOOK_CATEGORIES: { key: BookCategoryFilterKey; label: string }[] = [
 ];
 
 const BookshelfModal = ({ book }: BookshelfModalProps) => {
-    const { addBook, isLoading, books } = useBookshelfStore();
+    const addBook = useBookshelfStore((state) => state.addBook);
+    const isLoading = useBookshelfStore((state) => state.isLoading);
     const { user } = useAuthStore();
     const [filters, setFilters] = useState<
         Record<BookCategoryFilterKey, boolean>

@@ -12,7 +12,8 @@ import { FaRegStar, FaStar } from "react-icons/fa6";
 
 const DisplayCardSearchResult = (props: Book) => {
     const [showFullDescription, setShowFullDescription] = useState(false);
-    const { books, removeBook } = useBookshelfStore();
+    const books = useBookshelfStore((state) => state.books);
+    const removeBook = useBookshelfStore((state) => state.removeBook);
     const bookInShelf = books.find((book) => book.id === props.id);
     const isInShelf = !!bookInShelf;
     const rating = bookInShelf?.rating || null;
