@@ -31,6 +31,7 @@ const GetBookFromUrl = () => {
     const error = useBookshelfStore((state) => state.error);
     const clearError = useBookshelfStore((state) => state.clearError);
     const [initialLoading, setInitialLoading] = useState(true);
+    const [showError, setShowError] = useState(false);
 
     useEffect(() => {
         // Clear any existing errors when component mounts to prevent error flash
@@ -39,10 +40,15 @@ const GetBookFromUrl = () => {
         // Only load books if the books array is empty
         if (!books || books.length === 0) {
             console.log("Loading books from API...");
-            loadBooks().finally(() => {
-                // Mark initial loading as complete after loadBooks resolves or rejects
-                setInitialLoading(false);
-            });
+            loadBooks()
+                .catch(() => {
+                    // Only show error after we've attempted to load
+                    setShowError(true);
+                })
+                .finally(() => {
+                    // Mark initial loading as complete after loadBooks resolves or rejects
+                    setInitialLoading(false);
+                });
         } else {
             setInitialLoading(false);
         }
@@ -78,10 +84,9 @@ const GetBookFromUrl = () => {
         });
 
         setCurrentBook(foundBook || null);
-    }, [params, books, isLoading]);
+    }, [params, books, isLoading, setCurrentBook]);
 
-    // Error state - only show if we're not in initial loading and it's a real error
-    if (error && !initialLoading && books.length === 0) {
+    if (error && showError && !isLoading && books.length === 0) {
         return (
             <div className="p-4">
                 <h1 className="text-xl mb-4 text-red-600">Error</h1>
@@ -90,6 +95,7 @@ const GetBookFromUrl = () => {
                     className="mt-4 px-4 py-2 bg-blue-500 text-white rounded"
                     onClick={() => {
                         clearError();
+                        setShowError(false);
                         router.push("/book-corner");
                     }}
                 >
@@ -99,8 +105,8 @@ const GetBookFromUrl = () => {
         );
     }
 
-    // Book not found state
-    if (!currentBook) {
+    // Book not found state - only show if we're not still loading
+    if (!currentBook && !initialLoading && !isLoading) {
         return (
             <div className="p-4">
                 <h1 className="text-xl mb-4">Book not found</h1>
@@ -136,6 +142,8 @@ const GetBookFromUrl = () => {
             </div>
         );
     }
+
+    return null;
 };
 
 export default GetBookFromUrl;
