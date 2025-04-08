@@ -5,18 +5,14 @@ import { NextRequest, NextResponse } from "next/server";
 
 export const runtime = "nodejs";
 
-// GET all books for a user
 export async function GET(
     request: NextRequest,
     context: { params: { userId: string | string[] } }
 ) {
     try {
-        // Ensure params are properly awaited by destructuring after await
-        const { userId } = await Promise.resolve(context.params);
-
-        // Verify session user
-        const cookieStore = await cookies();
-        const sessionCookie = cookieStore.get("session")?.value;
+        const { userId } = context.params;
+        const userIdString = Array.isArray(userId) ? userId[0] : userId;
+        const sessionCookie = (await cookies()).get("session")?.value;
 
         if (!sessionCookie) {
             return NextResponse.json(
@@ -29,21 +25,10 @@ export async function GET(
             sessionCookie,
             true
         );
-        const sessionUser = {
-            uid: decodedClaims.uid,
-            email: decodedClaims.email || "",
-            name: decodedClaims.name || "",
-        };
-
-        // Ensure userId is a string
-        const userIdString = Array.isArray(userId) ? userId[0] : userId;
-
-        // Only allow users to access their own data
-        if (sessionUser.uid !== userIdString) {
+        if (decodedClaims.uid !== userIdString) {
             return NextResponse.json({ error: "Forbidden" }, { status: 403 });
         }
 
-        // Get user's books from Firestore
         const booksSnapshot = await adminDb
             .collection("users")
             .doc(userIdString)
@@ -65,18 +50,14 @@ export async function GET(
     }
 }
 
-// POST a new book
 export async function POST(
     request: NextRequest,
     context: { params: { userId: string | string[] } }
 ) {
     try {
-        // Ensure params are properly awaited by destructuring after await
-        const { userId } = await Promise.resolve(context.params);
-
-        // Verify session user
-        const cookieStore = await cookies();
-        const sessionCookie = cookieStore.get("session")?.value;
+        const { userId } = context.params;
+        const userIdString = Array.isArray(userId) ? userId[0] : userId;
+        const sessionCookie = (await cookies()).get("session")?.value;
 
         if (!sessionCookie) {
             return NextResponse.json(
@@ -89,23 +70,12 @@ export async function POST(
             sessionCookie,
             true
         );
-        const sessionUser = {
-            uid: decodedClaims.uid,
-            email: decodedClaims.email || "",
-            name: decodedClaims.name || "",
-        };
-
-        // Ensure userId is a string
-        const userIdString = Array.isArray(userId) ? userId[0] : userId;
-
-        // Only allow users to access their own data
-        if (sessionUser.uid !== userIdString) {
+        if (decodedClaims.uid !== userIdString) {
             return NextResponse.json({ error: "Forbidden" }, { status: 403 });
         }
 
         const book: Book = await request.json();
 
-        // Validate book data
         if (!book.id || !book.title) {
             return NextResponse.json(
                 { error: "Book ID and title are required" },
@@ -113,14 +83,12 @@ export async function POST(
             );
         }
 
-        // Add creation timestamp
         const bookWithTimestamp = {
             ...book,
             createdAt: new Date().toISOString(),
             updatedAt: new Date().toISOString(),
         };
 
-        // Save to Firestore
         await adminDb
             .collection("users")
             .doc(userIdString)
