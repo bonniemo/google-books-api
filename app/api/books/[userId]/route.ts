@@ -32,7 +32,7 @@ export async function GET(
     context: { params: { userId: string | string[] } }
 ) {
     try {
-        const { userId } = context.params;
+        const { userId } = await context.params;
         const userIdString = Array.isArray(userId) ? userId[0] : userId;
 
         const auth = await verifyAuth(userIdString);
@@ -69,7 +69,7 @@ export async function POST(
     context: { params: { userId: string | string[] } }
 ) {
     try {
-        const { userId } = context.params;
+        const { userId } = await context.params;
         const userIdString = Array.isArray(userId) ? userId[0] : userId;
 
         const auth = await verifyAuth(userIdString);

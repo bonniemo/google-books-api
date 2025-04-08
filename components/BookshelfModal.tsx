@@ -84,8 +84,8 @@ const BookshelfModal = ({ book }: BookshelfModalProps) => {
             ...filters,
             addedNoFlag: hasNoFlag,
             rating,
-            startDate: startDate?.toISOString(),
-            finishDate: finishDate?.toISOString(),
+            startDate: startDate,
+            finishDate: finishDate,
         };
 
         await addBook(newBook);
@@ -105,7 +105,7 @@ const BookshelfModal = ({ book }: BookshelfModalProps) => {
             </DialogTrigger>
 
             <DialogContent
-                className="bg-accent-light text-base-dark border p-8 border-none rounded-lg max-w-md w-full"
+                className="bg-accent-light text-base-dark border p-8 border-none rounded-lg max-w-md w-full max-h-[95%] overflow-scroll"
                 onInteractOutside={(e) => e.preventDefault()} // Prevent closing when clicking outside
                 onEscapeKeyDown={(e) => e.preventDefault()} // Prevent closing on escape key
             >

@@ -25,7 +25,8 @@ export async function DELETE(
     context: { params: { userId: string; bookId: string } }
 ) {
     try {
-        const { userId, bookId } = context.params;
+        const params = await context.params;
+        const { userId, bookId } = params;
 
         const auth = await verifyAuth(userId);
         if (!auth.isAuthenticated || auth.error) {
@@ -57,7 +58,8 @@ export async function PATCH(
     context: { params: { userId: string; bookId: string } }
 ) {
     try {
-        const { userId, bookId } = context.params;
+        const params = await context.params;
+        const { userId, bookId } = params;
 
         const auth = await verifyAuth(userId);
         if (!auth.isAuthenticated || auth.error) {
