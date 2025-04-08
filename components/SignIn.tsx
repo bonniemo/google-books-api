@@ -33,12 +33,7 @@ export default function SignIn() {
             }
 
             // Update Zustand store with user data
-            setUser({
-                uid: result.user.uid,
-                email: result.user.email,
-                name: result.user.name,
-                profilePicture: result.user.profilePicture || undefined,
-            });
+            setUser(result.user);
 
             router.replace("/book-corner");
         } catch (error) {
