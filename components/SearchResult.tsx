@@ -49,7 +49,7 @@ const SearchResult = ({
             <h2 className="text-xl font-semibold mb-6">
                 Found {result.items.length} books for "{searchQuery}"
             </h2>
-            <div className="flex flex-wrap gap-6">
+            <div className="grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 gap-6">
                 {result.items.map((book: GoogleBookVolume) => {
                     return (
                         <DisplayCardSearchResult

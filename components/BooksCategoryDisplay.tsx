@@ -10,7 +10,7 @@ const BooksCategoryDisplay = ({ title, books }: BooksCategoryDisplayProps) => {
     return (
         <section className="my-4 ">
             <h3 className="mb-4 text-lg font-bold tracking-wider">{title}</h3>
-            <ul className="flex flex-wrap gap-6">
+            <ul className="grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 gap-6">
                 {books.map((book) => (
                     <li className="w-full" key={book.id}>
                         <DisplayCardSearchResult

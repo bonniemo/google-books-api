@@ -18,7 +18,7 @@ const DisplayCardSearchResult = (props: Book) => {
     const rating = bookInShelf?.rating || null;
 
     return (
-        <article className="rounded-r-lg rounded-l-xl grid grid-cols-6 gap-2 bg-accent-light text-base-dark shadow-xl w-full max-w-[48rem] xl:max-w-[34rem]">
+        <article className="rounded-r-lg rounded-l-xl grid grid-cols-6 gap-2 bg-accent-light text-base-dark shadow-xl w-full h-full">
             <div className="bg-base-dark rounded-l-lg col-start-1 col-end-2 row-start-1 row-end-3 sm:row-end-2 w-2 sm:w-full"></div>
             <div className=" flex mt-4 col-start-1 sm:col-end-3 col-end-5 sm:justify-center pl-4 sm:pl-0 row-start-1">
                 <img
@@ -119,12 +119,6 @@ const DisplayCardSearchResult = (props: Book) => {
                         <BookPageBtn
                             book={{
                                 id: props.id,
-                                title: props.title,
-                                slug: props.title
-                                    ? props.title
-                                          .toLowerCase()
-                                          .replace(/\s+/g, "-")
-                                    : props.id,
                             }}
                         />
                         <div
