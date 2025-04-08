@@ -26,10 +26,8 @@ export const useAuthStore = create<AuthState>()(
             setLoading: (isLoading) => set({ isLoading }),
             signOut: async () => {
                 try {
-                    // Use the dedicated signOut action
                     const result = await signOut();
                     if (result.success) {
-                        // Clear user in store
                         set({ user: null });
                     }
                 } catch (error) {
