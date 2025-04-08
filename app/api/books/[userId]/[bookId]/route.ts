@@ -2,27 +2,37 @@ import { adminAuth, adminDb } from "@/app/firebase/admin-config";
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 
+async function verifyAuth(userId: string) {
+    const sessionCookie = (await cookies()).get("session")?.value;
+
+    if (!sessionCookie) {
+        return { isAuthenticated: false, error: "Unauthorized" };
+    }
+
+    const decodedClaims = await adminAuth.verifySessionCookie(
+        sessionCookie,
+        true
+    );
+    if (decodedClaims.uid !== userId) {
+        return { isAuthenticated: false, error: "Forbidden" };
+    }
+
+    return { isAuthenticated: true };
+}
+
 export async function DELETE(
     request: Request,
     context: { params: { userId: string; bookId: string } }
 ) {
     try {
         const { userId, bookId } = context.params;
-        const sessionCookie = (await cookies()).get("session")?.value;
 
-        if (!sessionCookie) {
+        const auth = await verifyAuth(userId);
+        if (!auth.isAuthenticated || auth.error) {
             return NextResponse.json(
-                { error: "Unauthorized" },
-                { status: 401 }
+                { error: auth.error },
+                { status: auth.error === "Forbidden" ? 403 : 401 }
             );
-        }
-
-        const decodedClaims = await adminAuth.verifySessionCookie(
-            sessionCookie,
-            true
-        );
-        if (decodedClaims.uid !== userId) {
-            return NextResponse.json({ error: "Forbidden" }, { status: 403 });
         }
 
         await adminDb
@@ -48,21 +58,13 @@ export async function PATCH(
 ) {
     try {
         const { userId, bookId } = context.params;
-        const sessionCookie = (await cookies()).get("session")?.value;
 
-        if (!sessionCookie) {
+        const auth = await verifyAuth(userId);
+        if (!auth.isAuthenticated || auth.error) {
             return NextResponse.json(
-                { error: "Unauthorized" },
-                { status: 401 }
+                { error: auth.error },
+                { status: auth.error === "Forbidden" ? 403 : 401 }
             );
-        }
-
-        const decodedClaims = await adminAuth.verifySessionCookie(
-            sessionCookie,
-            true
-        );
-        if (decodedClaims.uid !== userId) {
-            return NextResponse.json({ error: "Forbidden" }, { status: 403 });
         }
 
         const updatedData = await request.json();
