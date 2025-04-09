@@ -1,6 +1,6 @@
 "use client";
-import GetBookFromUrl from "@/components/GetBookFromUrl";
-import SingleBookDetails from "@/components/SingleBookDetails";
+import GetBookFromUrl from "@/components/single-book-page/GetBookFromUrl";
+import SingleBookDetails from "@/components/single-book-page/SingleBookDetails";
 
 const singleBookPage = () => {
     return (

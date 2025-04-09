@@ -2,8 +2,8 @@ import useBookshelfStore from "@/stores/useBookshelfStore";
 
 import { useEffect, useState } from "react";
 import { FaRegStar, FaStar } from "react-icons/fa6";
-import noCoverImg from "../public/no-cover.png";
-import { DatePicker } from "./DatePicker";
+import noCoverImg from "../../public/no-cover.png";
+import { DatePicker } from "../DatePicker";
 import RadioButtons from "./RadioButtons";
 import UserNotes from "./UserNotes";
 
@@ -147,12 +147,7 @@ const SingleBookDetails = () => {
             </section>
 
             <h1 className="text-lg font-bold mt-8 mb-2">Choose an Option</h1>
-            <RadioButtons<"quote" | "reflection" | "memorable">
-                options={radioOptions}
-                name="my-radio"
-                value={selectedOption}
-                onChange={setSelectedOption}
-            />
+            <RadioButtons value={selectedOption} onChange={setSelectedOption} />
 
             <UserNotes
                 book={book}

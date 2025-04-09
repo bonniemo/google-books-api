@@ -3,9 +3,9 @@ import useBookshelfStore from "@/stores/useBookshelfStore";
 import { getLabel } from "@/utils/utils";
 import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
-import ButtonNotes from "./ButtonNotes";
+import ButtonNotes from "../ButtonNotes";
 
-import Button from "./Button";
+import Button from "../Button";
 import {
     Dialog,
     DialogContent,
@@ -13,10 +13,10 @@ import {
     DialogHeader,
     DialogTitle,
     DialogTrigger,
-} from "./ui/dialog";
-import { Input } from "./ui/input";
-import { Label } from "./ui/label";
-import { Textarea } from "./ui/textarea";
+} from "../ui/dialog";
+import { Input } from "../ui/input";
+import { Label } from "../ui/label";
+import { Textarea } from "../ui/textarea";
 
 type NoteType = "quote" | "reflection" | "memorable";
 

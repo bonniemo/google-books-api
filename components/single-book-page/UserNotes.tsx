@@ -3,14 +3,14 @@ import { Book, BookNote } from "@/types/bookAppTypes";
 import { formatDate, getLabel } from "@/utils/utils";
 import { useState } from "react";
 import { BsFillTrash3Fill } from "react-icons/bs";
-import Divider from "./Divider";
+import Divider from "../Divider";
 import {
     Accordion,
     AccordionContent,
     AccordionItem,
     AccordionTrigger,
-} from "./ui/accordion";
-import { Button } from "./ui/button";
+} from "../ui/accordion";
+import { Button } from "../ui/button";
 import UserBookNotesModal from "./UserBookNotesModal";
 
 // Import the NoteType type
