@@ -18,7 +18,7 @@ export default function RootLayout({
 }>) {
     return (
         <html lang="en" suppressHydrationWarning>
-            <body className="bg-base-light dark:bg-base-night text-base-dark dark:text-base-light px-4 sm:px-6">
+            <body className="bg-base-light dark:bg-accent-night text-base-dark dark:text-base-light">
                 <ThemeProvider
                     attribute="class"
                     defaultTheme="system"
@@ -26,16 +26,16 @@ export default function RootLayout({
                     disableTransitionOnChange
                 >
                     {/* top menu for desktop */}
-                    <div className="hidden md:block sticky top-0 z-10 bg-background">
-                        <Nav />
+                    <div className="hidden md:flex items-center sticky top-0 z-10 bg-background">
                         <ThemeToggleBtn />
+                        <Nav />
                     </div>
                     {/* top settings for mobile */}
                     <div className="md:hidden bg-background flex items-center">
                         <Settings />
                         <ThemeToggleBtn />
                     </div>
-                    <div className="mb-24">{children}</div>
+                    <div className="mb-24 px-4 sm:px-6">{children}</div>
                     {/* bottom menu for mobile */}
                     <div className="md:hidden fixed bottom-0 left-0 right-0 z-10 bg-background">
                         <Nav />

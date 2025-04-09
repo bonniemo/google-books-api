@@ -146,14 +146,21 @@ const SingleBookDetails = () => {
                 </label>
             </section>
 
-            <h1 className="text-lg font-bold mt-8 mb-2">Choose an Option</h1>
-            <RadioButtons value={selectedOption} onChange={setSelectedOption} />
+            <div className="mt-8 flex gap-4 items-center">
+                <h1 className="text-lg font-bold">Display:</h1>
+                <RadioButtons
+                    value={selectedOption}
+                    onChange={setSelectedOption}
+                />
+            </div>
 
-            <UserNotes
-                book={book}
-                loadBooks={loadBooks}
-                type={selectedOption}
-            />
+            <div className="mt-4">
+                <UserNotes
+                    book={book}
+                    loadBooks={loadBooks}
+                    type={selectedOption}
+                />
+            </div>
         </>
     );
 };

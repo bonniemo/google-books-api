@@ -105,7 +105,7 @@ const BookshelfModal = ({ book }: BookshelfModalProps) => {
             </DialogTrigger>
 
             <DialogContent
-                className="bg-accent-light text-base-dark border p-8 border-none rounded-lg max-w-md w-full max-h-[95%] overflow-scroll"
+                className="bg-accent-light dark:bg-accent-night dark:text-base-light text-base-dark dark:shadow-xl border p-8 border-none rounded-lg max-w-md w-full max-h-[95%] overflow-scroll"
                 onInteractOutside={(e) => e.preventDefault()} // Prevent closing when clicking outside
                 onEscapeKeyDown={(e) => e.preventDefault()} // Prevent closing on escape key
             >
