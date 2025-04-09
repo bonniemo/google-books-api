@@ -8,63 +8,31 @@ const GetBookFromUrl = () => {
     const router = useRouter();
     const books = useBookshelfStore((state) => state.books);
     const loadBooks = useBookshelfStore((state) => state.loadBooks);
-    const currentBook = useBookshelfStore((state) => state.currentBook);
     const setCurrentBook = useBookshelfStore((state) => state.setCurrentBook);
-    const isLoading = useBookshelfStore((state) => state.isLoading);
-    const error = useBookshelfStore((state) => state.error);
-    const clearError = useBookshelfStore((state) => state.clearError);
-    const [initialLoading, setInitialLoading] = useState(true);
-    const [showError, setShowError] = useState(false);
+    const [isError, setIsError] = useState(false);
 
     useEffect(() => {
-        clearError();
         if (!books || books.length === 0) {
-            loadBooks()
-                .catch(() => {
-                    setShowError(true);
-                })
-                .finally(() => {
-                    setInitialLoading(false);
-                });
-        } else {
-            setInitialLoading(false);
+            loadBooks().catch(() => setIsError(true));
         }
-    }, [books.length, loadBooks, clearError]);
+    }, [books, loadBooks]);
 
     useEffect(() => {
-        if (isLoading || !books || books.length === 0) return;
+        if (!books || books.length === 0) return;
 
-        const { bookId } = params;
+        const bookId = params?.id as string;
         if (!bookId) return;
 
         const foundBook = books.find((book) => book.id === bookId);
         setCurrentBook(foundBook || null);
-    }, [params, books, isLoading, setCurrentBook]);
+    }, [params, books, setCurrentBook]);
 
-    if (error && showError && !isLoading && books.length === 0) {
+    if (isError) {
         return (
             <div className="p-4">
-                <h1 className="text-xl mb-4 text-red-600">Error</h1>
-                <p>{error}</p>
-                <button
-                    className="mt-4 px-4 py-2 bg-blue-500 text-white rounded"
-                    onClick={() => {
-                        clearError();
-                        setShowError(false);
-                        router.push("/book-corner");
-                    }}
-                >
-                    Return to Bookshelf
-                </button>
-            </div>
-        );
-    }
-
-    if (!currentBook && !initialLoading && !isLoading) {
-        return (
-            <div className="p-4">
-                <h1 className="text-xl mb-4">Book not found</h1>
-                <p>Could not find the requested book in your bookshelf.</p>
+                <h1 className="text-xl mb-4 text-red-600">
+                    Error loading books
+                </h1>
                 <button
                     className="mt-4 px-4 py-2 bg-blue-500 text-white rounded"
                     onClick={() => router.push("/book-corner")}

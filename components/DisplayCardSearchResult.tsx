@@ -119,6 +119,7 @@ const DisplayCardSearchResult = (props: Book) => {
                         <BookPageBtn
                             book={{
                                 id: props.id,
+                                title: props.title,
                             }}
                         />
                         <div
