@@ -47,7 +47,7 @@ export function AppSidebar() {
                 <SidebarGroup>
                     <SidebarGroupLabel>Book Scribble</SidebarGroupLabel>
                     <SidebarGroupContent>
-                        <SidebarMenu className="mt-8 space-y-4">
+                        <SidebarMenu className="mt-16 space-y-4">
                             {items.map((item) => (
                                 <SidebarMenuItem key={item.title}>
                                     <SidebarMenuButton asChild>
