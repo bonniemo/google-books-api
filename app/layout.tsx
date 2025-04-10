@@ -27,7 +27,6 @@ export default function RootLayout({
                 >
                     {/* top menu for desktop */}
                     <div className="hidden md:flex items-center sticky top-0 z-10 bg-background">
-                        <ThemeToggleBtn />
                         <Nav />
                     </div>
                     {/* top settings for mobile */}

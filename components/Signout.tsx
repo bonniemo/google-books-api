@@ -29,7 +29,7 @@ const Signout = () => {
             {isLoading ? (
                 "Signing Out..."
             ) : (
-                <PiSignOutBold className="min-h-7 min-w-7" />
+                <PiSignOutBold className="min-h-5 min-w-5" />
             )}
         </button>
     );
