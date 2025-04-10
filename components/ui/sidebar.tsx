@@ -299,7 +299,7 @@ const SidebarTrigger = React.forwardRef<
             variant="ghost"
             size="icon"
             className={cn(
-                "h-7 w-7",
+                "h-6 w-6 mt-2",
                 open ? "self-end" : "self-center",
                 className
             )}
@@ -309,7 +309,7 @@ const SidebarTrigger = React.forwardRef<
             }}
             {...props}
         >
-            <PanelLeft />
+            <PanelLeft className="min-h-6 min-w-6" />
             <span className="sr-only">Toggle Sidebar</span>
         </Button>
     );
