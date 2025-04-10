@@ -28,8 +28,9 @@ export default async function RootLayout({
                 >
                     <SidebarProvider defaultOpen={defaultOpen}>
                         <AppSidebar />
-                        <main>
-                            <div className="mb-24 px-4 sm:px-6">{children}</div>
+
+                        <main className="px-4 sm:px-6 max-w-screen-2xl mx-auto">
+                            {children}
                         </main>
                     </SidebarProvider>
                 </ThemeProvider>

@@ -67,7 +67,7 @@ const BookshelfDisplay = () => {
     return (
         <div>
             {/* Dynamically render checkboxes */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mb-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 my-8">
                 {BOOK_CATEGORIES.map(({ key, label }) => (
                     <div key={key} className="flex items-center space-x-3">
                         <Checkbox

@@ -1,9 +1,9 @@
 import useBookshelfStore from "@/stores/useBookshelfStore";
 
 import { useEffect, useState } from "react";
-import { FaRegStar, FaStar } from "react-icons/fa6";
 import noCoverImg from "../../public/no-cover.png";
 import { DatePicker } from "../DatePicker";
+import StarRating from "../StarRating";
 import RadioButtons from "./RadioButtons";
 import UserNotes from "./UserNotes";
 
@@ -72,78 +72,57 @@ const SingleBookDetails = () => {
 
     return (
         <>
-            <section className="text-sm">
+            <section className="text-base sm:text-lg sm:grid sm:grid-cols-[auto_1fr] gap-8 mt-8">
                 <img
                     src={book.imgUrl ? book.imgUrl : noCoverImg.src}
                     alt={`Book cover of ${book.title}`}
                     className="h-72 object-contain object-center rounded"
                 />
-                <h1 className="text-2xl font-bold mt-2">
-                    {book.title}
-                    {book.authors && book.authors.length > 0 && (
-                        <span className="font-normal text-lg">
-                            {" "}
-                            by {book.authors.join(", ")}
-                        </span>
-                    )}
-                </h1>
-                {book.publishedDate && <p>Published: {book.publishedDate}</p>}
-                {book.categories && (
-                    <p>Categories: {book.categories.join(", ")}</p>
-                )}
-                {book.pageCount && <p>Pages: {book.pageCount}</p>}
-                <div className="mt-2 flex gap-6">
+                <div className="space-y-8 mt-6 sm:mt-0">
                     <div>
-                        <label className="block mb-2 font-semibold">
-                            Started Reading:
-                        </label>
-                        <DatePicker
-                            date={startDate}
-                            setDate={changeStartDate}
-                        />
+                        <h1 className="text-2xl font-bold mt-2 ">
+                            {book.title}
+                            {book.authors && book.authors.length > 0 && (
+                                <span className="font-normal text-lg">
+                                    {" "}
+                                    by {book.authors.join(", ")}
+                                </span>
+                            )}
+                        </h1>
+                        {book.publishedDate && (
+                            <p>Published: {book.publishedDate}</p>
+                        )}
+                        {book.categories && (
+                            <p>Categories: {book.categories.join(", ")}</p>
+                        )}
+                        {book.pageCount && <p>Pages: {book.pageCount}</p>}
                     </div>
+                    <div className="mt-2 flex gap-6">
+                        <div>
+                            <label className="block mb-2 font-semibold">
+                                Started Reading:
+                            </label>
+                            <DatePicker
+                                date={startDate}
+                                setDate={changeStartDate}
+                            />
+                        </div>
 
-                    <div>
-                        <label className="block mb-2 font-semibold">
-                            Finished Reading:
-                        </label>
-                        <DatePicker
-                            date={finishDate}
-                            setDate={changeFinishDate}
-                        />
+                        <div>
+                            <label className="block mb-2 font-semibold">
+                                Finished Reading:
+                            </label>
+                            <DatePicker
+                                date={finishDate}
+                                setDate={changeFinishDate}
+                            />
+                        </div>
                     </div>
+                    <StarRating
+                        rating={rating}
+                        onRatingChange={handleRatingChange}
+                    />
                 </div>
-
-                <label className="flex items-center gap-1 mt-4">
-                    <span>Rating:</span>
-                    <div className="flex items-center gap-1">
-                        {[1, 2, 3, 4, 5].map((star) => {
-                            const filled =
-                                (hoverRating !== null && star <= hoverRating) ||
-                                (hoverRating === null &&
-                                    rating !== null &&
-                                    star <= rating);
-
-                            return (
-                                <button
-                                    key={star}
-                                    type="button"
-                                    onClick={() => handleRatingChange(star)}
-                                    onMouseEnter={() => setHoverRating(star)}
-                                    onMouseLeave={() => setHoverRating(null)}
-                                    className="text-accent-accent hover:scale-110 transition-transform mt-1"
-                                    aria-label={`Rate ${star} stars`}
-                                >
-                                    {filled ? (
-                                        <FaStar className="w-6 h-6" />
-                                    ) : (
-                                        <FaRegStar className="w-6 h-6" />
-                                    )}
-                                </button>
-                            );
-                        })}
-                    </div>
-                </label>
             </section>
 
             <div className="mt-8 flex gap-4 items-center">

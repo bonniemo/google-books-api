@@ -39,7 +39,6 @@ interface UserNotesProps {
 const UserNotes = ({ book, loadBooks, type }: UserNotesProps) => {
     const [deletingId, setDeletingId] = useState<string | null>(null);
 
-    // Selective imports from store
     const deleteQuote = useBookshelfStore((state) => state.deleteQuote);
     const deleteReflection = useBookshelfStore(
         (state) => state.deleteReflection
@@ -54,7 +53,6 @@ const UserNotes = ({ book, loadBooks, type }: UserNotesProps) => {
         setDeletingId(noteId);
 
         try {
-            // Use the appropriate delete function based on the note type
             switch (type) {
                 case "quote":
                     await deleteQuote(book.id, noteId);
